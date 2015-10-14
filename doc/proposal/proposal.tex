@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage{multirow,tabularx,verbatim}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\begin{document}
+\title{Project Proposal}
+\maketitle
+\begin{description}
+	\item[Name] Michael Sledge
+	\item[Supervisor] George Parisis
+	\item[Working Title] Creating a fast, scalable Web Server
+\end{description}
+\section{Aims and Objectives}
+\begin{comment}
+Could you please update the proposal to include some more in the aims and objectives section? More specifically, we want to see what are your general aims and expected outcome from this project; i.e. why are you doing it and what do you expect to get out of it. Also, please write some more on the project objectives. Async I/O is very good but I am sure you can be a bit more specific about other aspects (e.g. scalability, response times). why async I/O is good compared to multi-threading etc..
+\end{comment}
+
+\begin{comment}
+aims describe purpose and intention and include a description of your motivations for undertaking this particular topic. Objectives relate to the expected outcomes of the project. You should break these down into 'primary objectives' which you guarantee to achieve and 'extensions' which will only be implemented if time allows. The primary objectives should be clearly specified, but the extensions may be vaguer. Do not be afraid to specify more extensions than you will be able to implement.
+\end{comment}
+
+To create a basic but fast and scalable web server with basic HTTP support for serving requested files to clients, using asynchronous I/O. The server should scale to hundreds or even thousands of clients without significantly noticeable slow down from a client's point of view given sufficient hardware.
+
+Synchronous I/O requires a separate thread for each parallel connection each of which will sleep while waiting on I/O operations, Having a large number of threads to handle a large number of connections leads to a lot of overhead in memory and CPU time due to switching between threads each doing only a small amount of work at a time the waiting on other resources. A system using asynchronous I/O does not have this overhead as a single thread can handle a great number of connections removing the need for lots of context switching.
+
+This project will be an interesting challenge, I expect to gain experience building a complex application and working with networking and I/O systems, additionally implementing specifications (e.g. HTTP).
+
+Extensions may include ability to configure which files are served e.g. denying access to certain files, more complete HTTP support, simple caching.
+
+\section{Relevance}
+\begin{comment}
+write a short paragraph to explain how this project relates to your degree course.
+\end{comment}
+The internet and world wide web are large parts of the roles computers play in our everyday lives, it is a major use of computers in the world today. Creating a web server covers multiple aspects of my computer science course such as networking, interacting with the operating system for I/O.
+
+\section{Resources required}
+\begin{comment}
+it is your responsibility to make sure that the resources you need are available. Do not expect the department to buy things you need. (If you are going to use something not normally supported by the department you will need to obtain approval from your supervisor.)
+\end{comment}
+No special resources required.
+\begin{comment}
+Finally, could you please update your timetable to include timeslots for work related to this project. I would expect around 18 hours per week, preferably during week days and working hours.
+\end{comment}
+\section{Weekly Timetable}
+\hspace*{-3cm}
+\begin{tabularx}{1.5\textwidth}{|c|X|X|X|X|X|}
+\hline  
+& Monday & Tuesday & Wednesday & Thursday & Friday \\ \hline
+09:00 & HCI & & & & Comparative \\ \cline{3-5} \cline{1-1}
+09:30 & Seminar & & & & Programming \\ \cline{1-5}
+10:00 & project & project & & project & Lecture \\ \cline{1-5}
+10:30 & project & project & & project & \\ \hline
+11:00 & project & project & & project & \\ \hline
+11:30 & & & project & & \\ \hline
+12:00 & & & project & & \\ \hline
+12:30 & & & project & & \\ \hline
+13:00 & & & & & \\ \hline
+13:30 & project & & & & project \\ \hline
+14:00 & project & project & project & project & project \\ \hline
+14:30 & project & project & project & project & project \\ \hline
+15:00 & & project & project & project & project \\ \hline
+15:30 & project & & & & \\ \hline
+16:00 & project & Comparative Pro- & & HCI & \\ \cline{1-2} \cline{4-4}
+16:30 & project & gramming Lab & & Lecture & Web Computing \\ \cline{1-5}
+17:00 & & Web Computing & & & Lecture \\ \cline{1-2} \cline{4-5}
+17:30 & & Laboratory& & & \\ \hline
+\end{tabularx} 
+\hspace*{-3cm}
+
+I expect to spend some time on the project during evenings occasionally.
+\section{Background Reading}
+\begin{itemize}
+\item
+Inside NGINX: How We Designed for Performance \& Scale, 
+\url{https://www.nginx.com/blog/inside-nginx-how-we-designed-for-performance-scale/}
+
+\item
+Lazy Asynchronous I/O For Event-Driven Servers
+\url{https://www.usenix.org/legacy/event/usenix04/tech/general/full_papers/elmeleegy/elmeleegy_html/html.html}
+
+\item
+Boost application performance using asynchronous I/O
+\url{https://www.ibm.com/developerworks/library/l-async/}
+
+\item
+The C10K problem
+\url{http://www.kegel.com/c10k.html}
+
+\item
+Synchronous and Asynchronous I/O, \url{https://msdn.microsoft.com/en-gb/library/windows/desktop/aa365683%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396}
+\end{itemize}
+
+\begin{comment}
+\section{Interim Log}
+\end{comment}
+\end{document}
