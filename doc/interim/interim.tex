@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{verbatim}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\begin{document}
+\title{Interim Report}
+\maketitle
+\section{Introduction}
+Distributed systems can have many useful applications as they allow easy scalability and higher reliability due to the lack of a single point of failure when compared to standalone systems. Distributed hash tables are a way of building distributed systems using independent, self-organising nodes using methods much like a hash table, i.e. key, value pairs.  A DHT consists of a keyspace to which everything is mapped, a partition scheme which maps keys to nodes and an overlay network to allow each node to find the node to which a particular key is assigned. The key hashing and partitioning scheme must be such that with no change in nodes, keys map to the same node and a node leaving or arriving only affects its two adjacent nodes.
+
+DHTs and similar distributed systems are widely used in many well-known large dynamic web applications for a range of purposes, primarily performance improvements for content fetching and the scalability and availability they provide.
+
+DHTs are fully decentralised so that responsibility for maintaining the network is spread over all nodes and the effects of failures of individual nodes a can be minimised, this also has several other advantages: a DHT can be scaled to an extremely large number of nodes with little to no change in the design of nodes themselves, functionality can be maintained even when the availability of individual nodes fluctuates.
+
+An important aspect of maintaining scalability and performance of network applications is the way network I/O is handled. There are two ways of handling multiple connections simultaneously: synchronously, where a new thread or process is created for each connection, this method is fairly simple but also scales poorly as large numbers of connections will require a large number of threads, leading to much overhead from context switching; and asynchronously, which allows a single thread to handle many connections by initiating I/O operations then continuing to do other processing tasks such as dealing with completed I/O operations while waiting for the I/O to complete.
+
+The aim of this project will be to produce tools for building distributed systems based on DHTs with high network performance and scalability with use of asynchronous I/O. It should involve implementing DHT functionality for nodes allowing users to implement the functionality to be distributed on a network.
+
+This report will cover professional and ethical considerations, related research and systems, more detailed technical requirements, and a record of phases which have been completed and those still to be completed.
+
+\section{Professional Considerations}
+The BCS Code of Conduct [1] sets out the following standards which may be relevant to this project: 2 c) “develop your professional knowledge, skills and competence on a continuing basis, maintaining awareness of technological developments, procedures, and standards that are relevant to your field.” and 2 d) “ensure that you have the knowledge and understanding of Legislation* and that you comply with such Legislation, in carrying out your professional responsibilities.”
+
+From ‘Professional Competence and Integrity’ in Annex A Interpretation of the BCS Code of Conduct [2]: “You should seek out and observe good practice exemplified by rules, standards, conventions or protocols that are relevant in your area of specialism.”
+
+Existing libraries may be used in this project and their licenses must be followed, standards and conventions in languages used should be followed also.
+
+
+
+\section{Background Reading/Existing solutions}
+The chord protocol [3] uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as 
+
+Memcached [4] is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies
+
+Mace [5] is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for
+writing complex but correct and efficient implementations of distributed systems.” [6]
+\section{Requirements Analysis}
+Build a high performance library for building DHT based systems with asynchronous I/O for scalability. Nodes should be independent and self organising, requiring no central authority, and be tolerant of joining leaving and failing of nodes in the system.
+
+The library should take care of creating and joining networks when instructed to; deal with mapping keys to nodes; provide a method for applications written using it to implement functionality when receiving messages from other application nodes. Messages should be in the form of a key value pair, the key will be used to map the message to a node and the value is the contents of the message.
+\section{Project Plan}
+Implement basic async network I/O.
+Design and implementation of keyspace partitioning and overlay network.
+
+Implement a small number of simple example applications for testing.
+
+Draft report
+Due: 2016-03-17
+Requires at least most implementation work done
+Final Report
+	Due: 2016-04-18
+Requires implementation and testing to be completed	
+Poster
+Due: 2016-03-17
+
+
+
+\section{Interim Log}
+2015-09-24 initial meeting
+2015-10-02 Meeting: discussion regarding async I/O
+	Researching async I/O implementations in the form of libraries or server software such as libevent, boost::asio, node.js
+2015-10-15 Meeting: discussion on whether a web server would be interesting and challenging in the right way and suggestions of alternatives.
+2015-10-22 Meeting: introduction of DHTs
+	Researching DHT’s more in depth 
+2015-10-30 Meeting: discussing DHTs and contents of this report
+\section{Appendices}
+\subsection{References}
+\begin{itemize}
+\item[1] BCS Code of Conduct: http://www.bcs.org/category/6030  [accessed 2015-11-01]
+
+\item[2] BCS Code of Conduct, Annex A, Interpretation of the BCS Code of Conduct http://www.bcs.org/content/ConWebDoc/39988  [accessed 2015-11-01]
+
+\item[3] Chord: A Scalable Peer-to-Peer Lookup Protocol for Internet Applications Ion Stoica, Robert Morris, David Liben-Nowell, David R. Karger, M. Frans Kaashoek, Frank Dabek, and Hari Balakrishnan, Member, IEEE, IEEE/ACM TRANSACTIONS ON NETWORKING, VOL. 11, NO. 1, FEBRUARY 2003
+
+\item[4] memcached http://memcached.org/
+
+\item[5] mace http://www.macesystems.org/
+
+\item[6] Mace + Distributed Systems HOWTO, James W. Anderson, Charles Killian, Amin Vahdat, June 30, 2009
+
+\end{itemize}
+\subsection{Project Proposal}
+[to be attached]
+
+\end{document}
