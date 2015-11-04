@@ -1,8 +1,10 @@
 \documentclass{article}
-\usepackage{verbatim,pgfgantt}
+\usepackage{verbatim,pgfgantt,graphicx}
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \begin{document}
 \title{Interim Report}
+\author{Michael Sledge\\ CN:121677}
+\date{}
 \maketitle
 \section{Introduction}
 Distributed systems can have many useful applications as they allow easy scalability and higher reliability due to the lack of a single point of failure when compared to standalone systems. Distributed hash tables are a way of building distributed systems using independent, self-organising nodes using methods much like a hash table, i.e. key, value pairs.  A DHT consists of a keyspace to which everything is mapped, a partition scheme which maps keys to nodes and an overlay network to allow each node to find the node to which a particular key is assigned. The key hashing and partitioning scheme must be such that with no change in nodes, keys map to the same node and a node leaving or arriving only affects its two adjacent nodes.
@@ -29,7 +31,19 @@ Existing libraries may be used in this project and their licenses must be follow
 \section{Background Reading/Existing solutions}
 The chord protocol [3] uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
 Nodes are mapped into the same keyspace used for identifiers for the application
-Each node knows how to find the node that an identifier maps to: If the id is between the current node and i's successor then it maps to the successor, otherwise it asks the furthest node it knows about that is not past the id in the keyspace.
+Each node knows how to find the node that an identifier maps to, illustrated in fig 1. If the id is between the current node and its successor then it maps to the successor, otherwise it asks the furthest node it knows about that is not past the id in the keyspace. The succeeding nodes that a node has knowledge of are stored in a 'finger' table (illustrated as dashed arrows in fig 1.) These are not necessary for functionality but they reduce the number of steps when mapping a key to a node.
+\begin{figure}
+\centering
+\includegraphics{chord_find-successor.png}
+\caption{Finding the successor for key 19. Dashed arrows show which nodes a node has knowledge of (some have been omitted for clarity).}
+\end{figure}
+
+The stabilisation that chord nodes run periodically is important to keep the network functional as the availability of nodes changes. Stabilisation is executed as follows: the node checks if there is a node between itself and its recorded successor, if there is it updates its recorded successor; then the node notifies its recorded successor of its existence so it can update its predecessor record if necessary. Nodes also periodically update their finger tables, and check whether their predecessor is still accessible.
+\begin{figure}
+\centering
+\includegraphics{chord_joining.png}
+\caption{Node joining and stabilisation. (a) A chord network in a stable state. (b) new node n15 joins having found its successor (c) n15 runs its stabilisation and now n18 is aware of n15. (d) n12 runs its stabilisation and the network is back to as stable state}
+\end{figure}
 \\
 \\
 Memcached [4] is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
@@ -37,23 +51,46 @@ Memcached [4] is a distributed in-memory caching system based on a distributed h
 Memcached uses spare memory on web servers to create a distributed in-memory cache which can be used to alleviate server load. This provides several benefits when compared to having each server managing it's own individual cache: the combined cache is much larger than individual caches; cached data is consistent any server requesting the a key in the cache will get the same value, whereas separate caches may not update data at the same time; improved scalability, as more servers are added to handle increasing load the size of the cache increases, making large scaling much easier than it would be with individual caches per server.
 \\
 \\
-Mace [5] is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” [6] It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems
+Mace [5] is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” [6] It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems.
 \\
 \\
-Libevent [7]
+Libevent [7] is a cross platform C library which provides a single API for implementing event driven network servers using one of a number of mechanisms systems provide for event notification, to allow for asynchronous I/O operations. Libevent checks for events and runs the callbacks specified for each event in the queue. An event can be a notification for a socket becoming read- or write-able, a new connection on a listen socket or a timer event among other things. Libevent also provides bufferevents to simplify the task of using read and write buffers with socket events.
 
-
+Similar to Libevent, Boost.Asio [8] is a cross platform C++ library providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is narrower than libevent's 
 \section{Requirements Analysis}
 Build a high performance library for building DHT based systems with asynchronous I/O for scalability. Nodes should be independent and self organising, requiring no central authority, and be tolerant of joining leaving and failing of nodes in the system.
 
-The library should take care of creating and joining networks when instructed to; deal with mapping keys to nodes; provide a method for applications written using it to implement functionality when receiving messages from other application nodes. Messages should be in the form of a key value pair, the key will be used to map the message to a node and the value is the contents of the message.
+Functional requirements:
+\begin{itemize}
+\item
+Creating and joining a network
+\item
+Finding the node a key maps to from any node on the network.
+\item
+Periodic stabilisation to account for change in availability of nodes.
+\item
+Allow sending of messages or data to other nodes for the application.
+\item
+Provide callbacks for the application when a message is received.
+\item
+Provide callbacks for notifying the application of changes in the availability of nodes that may affect it, i.e. the next and previous nodes.
+\end{itemize}
+
+
+Non-functional requirements:
+\begin{itemize}
+\item
+Provide high performance network communication between nodes
+\item
+Be highly scalable both in terms of number of nodes and the load of individual nodes assuming the application is able to handle such loads.
+\end{itemize}
+
 \section{Project Plan}
 
 
 \hspace*{-3cm}
 \begin{ganttchart}[hgrid,vgrid]{1}{22}
 %labels
-\gantttitle{Year}{22} \\
 \gantttitle{Autumn}{12}
 \gantttitle{Spring}{10} \\
 \gantttitle{1}{1}
@@ -122,6 +159,11 @@ The library should take care of creating and joining networks when instructed to
 \item[5] Mace \url{http://www.macesystems.org/}
 
 \item[6] Mace + Distributed Systems HOWTO, James W. Anderson, Charles Killian, Amin Vahdat, June 30, 2009
+
+\item[7] Libevent \url{http://libevent.org/} [accessed 2015-11-02]
+
+\item[8] Boost.Asio \url{http://www.boost.org/doc/libs/1_59_0/doc/html/boost_asio.html} [accessed 2015-11-04]
+
 
 \end{itemize}
 \subsection{Project Proposal}
