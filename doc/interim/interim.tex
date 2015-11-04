@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{verbatim}
+\usepackage{verbatim,pgfgantt}
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 \begin{document}
 \title{Interim Report}
@@ -27,53 +27,99 @@ Existing libraries may be used in this project and their licenses must be follow
 
 
 \section{Background Reading/Existing solutions}
-The chord protocol [3] uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as 
+The chord protocol [3] uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
+Nodes are mapped into the same keyspace used for identifiers for the application
+Each node knows how to find the node that an identifier maps to: If the id is between the current node and i's successor then it maps to the successor, otherwise it asks the furthest node it knows about that is not past the id in the keyspace.
+\\
+\\
+Memcached [4] is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
 
-Memcached [4] is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies
+Memcached uses spare memory on web servers to create a distributed in-memory cache which can be used to alleviate server load. This provides several benefits when compared to having each server managing it's own individual cache: the combined cache is much larger than individual caches; cached data is consistent any server requesting the a key in the cache will get the same value, whereas separate caches may not update data at the same time; improved scalability, as more servers are added to handle increasing load the size of the cache increases, making large scaling much easier than it would be with individual caches per server.
+\\
+\\
+Mace [5] is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” [6] It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems
+\\
+\\
+Libevent [7]
 
-Mace [5] is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for
-writing complex but correct and efficient implementations of distributed systems.” [6]
+
 \section{Requirements Analysis}
 Build a high performance library for building DHT based systems with asynchronous I/O for scalability. Nodes should be independent and self organising, requiring no central authority, and be tolerant of joining leaving and failing of nodes in the system.
 
 The library should take care of creating and joining networks when instructed to; deal with mapping keys to nodes; provide a method for applications written using it to implement functionality when receiving messages from other application nodes. Messages should be in the form of a key value pair, the key will be used to map the message to a node and the value is the contents of the message.
 \section{Project Plan}
-Implement basic async network I/O.
-Design and implementation of keyspace partitioning and overlay network.
-
-Implement a small number of simple example applications for testing.
-
-Draft report
-Due: 2016-03-17
-Requires at least most implementation work done
-Final Report
-	Due: 2016-04-18
-Requires implementation and testing to be completed	
-Poster
-Due: 2016-03-17
 
 
+\hspace*{-3cm}
+\begin{ganttchart}[hgrid,vgrid]{1}{22}
+%labels
+\gantttitle{Year}{22} \\
+\gantttitle{Autumn}{12}
+\gantttitle{Spring}{10} \\
+\gantttitle{1}{1}
+\gantttitle{2}{1}
+\gantttitle{3}{1}
+\gantttitle{4}{1}
+\gantttitle{5}{1}
+\gantttitle{6}{1}
+\gantttitle{7}{1}
+\gantttitle{8}{1}
+\gantttitle{9}{1}
+\gantttitle{10}{1}
+\gantttitle{11}{1}
+\gantttitle{12}{1}
+
+\gantttitle{1}{1}
+\gantttitle{2}{1}
+\gantttitle{3}{1}
+\gantttitle{4}{1}
+\gantttitle{5}{1}
+\gantttitle{6}{1}
+\gantttitle{7}{1}
+\gantttitle{8}{1}
+\gantttitle{9}{1}
+\gantttitle{10}{1}\\
+%tasks
+\ganttbar{first task}{1}{2} \\
+\ganttbar{Proposal}{2}{3} \\
+\ganttbar{Interim Report}{6}{7} \\
+\ganttbar{Implementing network I/O}{8}{9} \\
+\ganttbar{Implementing overlay network}{9}{11} \\
+\ganttbar{Implementing example applications}{12}{14} \\
+\ganttbar{Testing and Evaluation}{14}{16} \\
+\ganttbar{Draft Report}{16}{19} \\
+\ganttbar{Pesentation Poster}{18}{19} \\
+\ganttbar{Final Report}{20}{22}
+
+%relations 
+\ganttlink{elem1}{elem2}
+\ganttlink{elem3}{elem4}
+\ganttlink{elem4}{elem5}
+\ganttlink{elem5}{elem6}
+\ganttlink{elem7}{elem9}
+\end{ganttchart}
+\hspace*{-3cm}
 
 \section{Interim Log}
-2015-09-24 initial meeting
+2015-09-24 initial meeting\\
 2015-10-02 Meeting: discussion regarding async I/O
-	Researching async I/O implementations in the form of libraries or server software such as libevent, boost::asio, node.js
-2015-10-15 Meeting: discussion on whether a web server would be interesting and challenging in the right way and suggestions of alternatives.
+	Researching async I/O implementations in the form of libraries or server software such as libevent, boost::asio, node.js\\
+2015-10-15 Meeting: discussion on whether a web server would be interesting and challenging in the right way and suggestions of alternatives.\\
 2015-10-22 Meeting: introduction of DHTs
-	Researching DHT’s more in depth 
+	Researching DHT’s more in depth \\
 2015-10-30 Meeting: discussing DHTs and contents of this report
 \section{Appendices}
 \subsection{References}
 \begin{itemize}
-\item[1] BCS Code of Conduct: http://www.bcs.org/category/6030  [accessed 2015-11-01]
+\item[1] BCS Code of Conduct: \url{http://www.bcs.org/category/6030}  [accessed 2015-11-01]
 
-\item[2] BCS Code of Conduct, Annex A, Interpretation of the BCS Code of Conduct http://www.bcs.org/content/ConWebDoc/39988  [accessed 2015-11-01]
+\item[2] BCS Code of Conduct, Annex A, Interpretation of the BCS Code of Conduct \url{http://www.bcs.org/content/ConWebDoc/39988}  [accessed 2015-11-01]
 
 \item[3] Chord: A Scalable Peer-to-Peer Lookup Protocol for Internet Applications Ion Stoica, Robert Morris, David Liben-Nowell, David R. Karger, M. Frans Kaashoek, Frank Dabek, and Hari Balakrishnan, Member, IEEE, IEEE/ACM TRANSACTIONS ON NETWORKING, VOL. 11, NO. 1, FEBRUARY 2003
 
-\item[4] memcached http://memcached.org/
+\item[4] Memcached \url{http://memcached.org/}
 
-\item[5] mace http://www.macesystems.org/
+\item[5] Mace \url{http://www.macesystems.org/}
 
 \item[6] Mace + Distributed Systems HOWTO, James W. Anderson, Charles Killian, Amin Vahdat, June 30, 2009
 
