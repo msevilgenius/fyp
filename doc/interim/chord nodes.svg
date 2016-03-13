@@ -555,6 +555,42 @@
          d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
          transform="scale(-0.6,-0.6)" />
     </marker>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8625">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+         d="m 417.92384,457.16523 156.25356,0 0,157.47968 -156.25356,0 z"
+         id="path8627"
+         inkscape:connector-curvature="0" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8629">
+      <path
+         inkscape:connector-curvature="0"
+         id="path8631"
+         d="m 417.92384,737.16523 156.25356,0 0,157.47968 -156.25356,0 z"
+         style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8633">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline"
+         d="m 137.92384,737.16523 156.25356,0 0,157.47968 -156.25356,0 z"
+         id="path8635"
+         inkscape:connector-curvature="0" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath8637">
+      <path
+         inkscape:connector-curvature="0"
+         id="path8639"
+         d="m 137.92384,457.16523 156.25356,0 0,157.47968 -156.25356,0 z"
+         style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;display:inline" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -564,8 +600,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="246.70629"
-     inkscape:cy="401.21018"
+     inkscape:cx="362.65433"
+     inkscape:cy="366.38383"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -577,9 +613,9 @@
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
      inkscape:snap-global="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="1276"
+     inkscape:window-width="1218"
+     inkscape:window-height="1001"
+     inkscape:window-x="58"
      inkscape:window-y="-4"
      inkscape:window-maximized="1"
      showguides="true"
@@ -616,10 +652,11 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     style="display:inline">
     <path
        sodipodi:type="arc"
-       style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-opacity:1;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:8,4;stroke-dashoffset:0"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8, 4;stroke-dashoffset:0"
        id="path2985"
        sodipodi:cx="170.21071"
        sodipodi:cy="150.80104"
@@ -653,7 +690,7 @@
        sodipodi:cy="149.28581"
        sodipodi:cx="324.25897"
        id="path5391"
-       style="fill:url(#Checkerboard);stroke:#000000;stroke-width:7.13270473000000040;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1.0"
+       style="fill:url(#Checkerboard);fill-opacity:1;stroke:#000000;stroke-width:7.13270473;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        sodipodi:type="arc"
        inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_find-successor.png"
        inkscape:export-xdpi="201.97328"
@@ -674,7 +711,7 @@
        id="g6450"
        transform="translate(-1.767767,-11.111678)">
       <path
-         d="m 275.77165,150.80104 c 0,58.2997 -47.26124,105.56094 -105.56094,105.56094 -58.2997,0 -105.560945,-47.26124 -105.560945,-105.56094 0,-58.299699 47.261245,-105.560943 105.560945,-105.560943 58.2997,0 105.56094,47.261244 105.56094,105.560943 z"
+         d="m 275.77165,150.80104 a 105.56094,105.56094 0 1 1 -211.121885,0 105.56094,105.56094 0 1 1 211.121885,0 z"
          sodipodi:ry="105.56094"
          sodipodi:rx="105.56094"
          sodipodi:cy="150.80104"
@@ -691,7 +728,7 @@
          sodipodi:cy="149.28581"
          sodipodi:rx="28.284271"
          sodipodi:ry="28.284271"
-         d="m 352.54324,149.28581 c 0,15.62097 -12.6633,28.28427 -28.28427,28.28427 -15.62097,0 -28.28427,-12.6633 -28.28427,-28.28427 0,-15.62097 12.6633,-28.28427 28.28427,-28.28427 15.62097,0 28.28427,12.6633 28.28427,28.28427 z"
+         d="m 352.54324,149.28581 a 28.284271,28.284271 0 1 1 -56.56854,0 28.284271,28.284271 0 1 1 56.56854,0 z"
          transform="matrix(0.14019927,0,0,0.14019927,384.90083,110.85607)">
         <title
            id="title5393-8">node</title>
@@ -706,50 +743,62 @@
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="138.78354"
+       x="204.78354"
        y="620.3927"
        id="text7560"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269"><tspan
          sodipodi:role="line"
          id="tspan7562"
-         x="138.78354"
+         x="204.78354"
          y="620.3927"
          style="font-size:14px">(a)</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="398.78354"
+       x="384.78354"
        y="620.3927"
        id="text7560-0"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269"><tspan
          sodipodi:role="line"
          id="tspan7562-2"
-         x="398.78354"
+         x="384.78354"
          y="620.3927"
          style="font-size:14px">(b)</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="139.18002"
-       y="905.27094"
+       x="205.18002"
+       y="825.27094"
        id="text7560-08"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269"><tspan
          sodipodi:role="line"
          id="tspan7562-9"
-         x="139.18002"
-         y="905.27094"
+         x="205.18002"
+         y="825.27094"
          style="font-size:14px">(c)</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="398.78354"
-       y="905.27094"
+       x="384.78354"
+       y="825.27094"
        id="text7560-0-2"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269"><tspan
          sodipodi:role="line"
          id="tspan7562-2-8"
-         x="398.78354"
-         y="905.27094"
+         x="384.78354"
+         y="825.27094"
          style="font-size:14px">(d)</tspan></text>
     <path
        transform="matrix(0.14019927,0,0,0.14019927,152.61728,231.71487)"
@@ -1127,11 +1176,27 @@
        inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_find-successor.png"
        inkscape:export-xdpi="201.97328"
        inkscape:export-ydpi="201.97328" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.82994395px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -349.45489,157.15025 260.000003,0 0,196.22612 -260.000003,0 z"
+       id="path8509"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="joining"
+     style="display:inline">
     <g
+       style="display:inline"
        id="g8417"
-       transform="translate(0,-8)">
+       transform="translate(0,-8)"
+       clip-path="url(#clipPath8637)"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269">
       <path
-         d="m 275.77165,150.80104 c 0,58.2997 -47.26124,105.56094 -105.56094,105.56094 -58.2997,0 -105.560945,-47.26124 -105.560945,-105.56094 0,-58.299699 47.261245,-105.560943 105.560945,-105.560943 58.2997,0 105.56094,47.261244 105.56094,105.560943 z"
+         d="m 275.77165,150.80104 a 105.56094,105.56094 0 1 1 -211.121885,0 105.56094,105.56094 0 1 1 211.121885,0 z"
          sodipodi:ry="105.56094"
          sodipodi:rx="105.56094"
          sodipodi:cy="150.80104"
@@ -1142,7 +1207,7 @@
          transform="translate(-22.690847,334.86556)" />
       <path
          transform="matrix(0.14019927,0,0,0.14019927,207.61993,464.73685)"
-         d="m 352.54324,149.28581 c 0,15.62097 -12.6633,28.28427 -28.28427,28.28427 -15.62097,0 -28.28427,-12.6633 -28.28427,-28.28427 0,-15.62097 12.6633,-28.28427 28.28427,-28.28427 15.62097,0 28.28427,12.6633 28.28427,28.28427 z"
+         d="m 352.54324,149.28581 a 28.284271,28.284271 0 1 1 -56.56854,0 28.284271,28.284271 0 1 1 56.56854,0 z"
          sodipodi:ry="28.284271"
          sodipodi:rx="28.284271"
          sodipodi:cy="149.28581"
@@ -1161,7 +1226,7 @@
          sodipodi:cy="149.28581"
          sodipodi:rx="28.284271"
          sodipodi:ry="28.284271"
-         d="m 352.54324,149.28581 c 0,15.62097 -12.6633,28.28427 -28.28427,28.28427 -15.62097,0 -28.28427,-12.6633 -28.28427,-28.28427 0,-15.62097 12.6633,-28.28427 28.28427,-28.28427 15.62097,0 28.28427,12.6633 28.28427,28.28427 z"
+         d="m 352.54324,149.28581 a 28.284271,28.284271 0 1 1 -56.56854,0 28.284271,28.284271 0 1 1 56.56854,0 z"
          transform="matrix(0.14019927,0,0,0.14019927,166.72485,548.17835)">
         <title
            id="title5393-6">node</title>
@@ -1180,7 +1245,7 @@
          style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 1;stroke-dashoffset:0;marker-start:none;marker-mid:none;marker-end:url(#Arrow1Mstart)" />
       <path
          transform="matrix(0.14019927,0,0,0.14019927,121.99863,568.41726)"
-         d="m 352.54324,149.28581 c 0,15.62097 -12.6633,28.28427 -28.28427,28.28427 -15.62097,0 -28.28427,-12.6633 -28.28427,-28.28427 0,-15.62097 12.6633,-28.28427 28.28427,-28.28427 15.62097,0 28.28427,12.6633 28.28427,28.28427 z"
+         d="m 352.54324,149.28581 a 28.284271,28.284271 0 1 1 -56.56854,0 28.284271,28.284271 0 1 1 56.56854,0 z"
          sodipodi:ry="28.284271"
          sodipodi:rx="28.284271"
          sodipodi:cy="149.28581"
@@ -1238,8 +1303,13 @@
            sodipodi:role="line">n20</tspan></text>
     </g>
     <g
+       style="display:inline"
        id="g8436"
-       transform="translate(0,-8)">
+       transform="translate(-80,-8)"
+       clip-path="url(#clipPath8625)"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269">
       <path
          transform="translate(237.30915,334.86556)"
          sodipodi:type="arc"
@@ -1321,7 +1391,7 @@
          sodipodi:cy="149.28581"
          sodipodi:rx="28.284271"
          sodipodi:ry="28.284271"
-         d="m 352.54324,149.28581 a 28.284271,28.284271 0 1 1 -56.56854,0 28.284271,28.284271 0 1 1 56.56854,0 z"
+         d="m 352.54324,149.28581 c 0,15.62097 -12.6633,28.28427 -28.28427,28.28427 -15.62097,0 -28.28427,-12.6633 -28.28427,-28.28427 0,-15.62097 12.6633,-28.28427 28.28427,-28.28427 15.62097,0 28.28427,12.6633 28.28427,28.28427 z"
          transform="matrix(0.14019927,0,0,0.14019927,496.17474,518.96934)">
         <title
            id="title7556">node</title>
@@ -1378,8 +1448,13 @@
            id="tspan8322-4">n15</tspan></text>
     </g>
     <g
+       style="display:inline"
        id="g8485"
-       transform="translate(0,-8)">
+       transform="translate(0,-88)"
+       clip-path="url(#clipPath8633)"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269">
       <path
          transform="translate(-22.69085,614.86556)"
          sodipodi:type="arc"
@@ -1518,8 +1593,13 @@
            id="tspan8322-4-5">n15</tspan></text>
     </g>
     <g
+       style="display:inline"
        id="g8460"
-       transform="translate(0,-8)">
+       transform="translate(-80,-88)"
+       clip-path="url(#clipPath8629)"
+       inkscape:export-filename="F:\Documents\fyp\doc\interim\chord_joining.png"
+       inkscape:export-xdpi="189.47269"
+       inkscape:export-ydpi="189.47269">
       <path
          d="m 275.77165,150.80104 c 0,58.2997 -47.26124,105.56094 -105.56094,105.56094 -58.2997,0 -105.560945,-47.26124 -105.560945,-105.56094 0,-58.299699 47.261245,-105.560943 105.560945,-105.560943 58.2997,0 105.56094,47.261244 105.56094,105.560943 z"
          sodipodi:ry="105.56094"
@@ -1663,30 +1743,10 @@
            y="819.72125"
            id="tspan8322-4-4">n15</tspan></text>
     </g>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.82994395px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -349.45489,157.15025 260.000003,0 0,196.22612 -260.000003,0 z"
-       id="path8509"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path8511"
-       d="m 137.92384,449.16523 156.25356,0 0,157.47968 -156.25356,0 z"
-       style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 417.92384,449.16523 156.25356,0 0,157.47968 -156.25356,0 z"
-       id="path8513"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 137.92384,729.16523 156.25356,0 0,157.47968 -156.25356,0 z"
-       id="path8515"
-       inkscape:connector-curvature="0" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path8517"
-       d="m 417.92384,729.16523 156.25356,0 0,157.47968 -156.25356,0 z"
-       style="fill:none;stroke:#000000;stroke-width:0.57638264px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="clip1"
+     style="display:inline" />
 </svg>
