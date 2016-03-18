@@ -154,14 +154,15 @@ Initialise a new server instance by providing a listen port number and a callbac
 On receiving notification of an accepted connection (via callback), the application should set read, error/disconnect, and optionally write handlers for the newly accepted connection
 
 \subparagraph{Internals}
+The net server keeps a list of references to open connections and keeps track of the callbacks that have been set for each one. It also has a mutex lock for the connection list to prevent concurrent modification as it is likely that the event loop thread may accept a connection while another thread requests creation of an outgoing connection.
 
 \paragraph{The Node layer}
 The node layer is the main body and contains code for creating, joining and maintaining the network of nodes and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
 \subparagraph{Usage}
 
 \subparagraph{Internals}
-
-Can be split into a few sub modules: Handling incomming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
+A node instance contains a reference to its own net server instance.
+The node layer can be split into a few sub modules: Handling incomming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
 
 \paragraph{Communication Protocol}
 Messages sent between nodes use a TLV (type-length-value) format, in other words they consist of a header, containing a single byte indicating the type of message and a 4 byte value indicating the length of the body, and the body itself which contains the actual information formatted according to the message type
