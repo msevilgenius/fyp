@@ -131,11 +131,50 @@ Provide high performance network communication between nodes
 Be highly scalable both in terms of number of nodes and the load of individual nodes assuming the application is able to handle such loads.
 \end{itemize}
 
+\section{Design and Building}
 
+\subsection{Design Process}
+
+The design involves multiple modules or layers
+
+\subsection{Design Principals}
+Several design principals were
+
+\subparagraph{No global state}
+this makes it easier to create thread-safe code and allow multiple instances to be instantiated within a single process. It allows for a more functional approach wherein all state has to be passed to functions as a arguments, this will mean that they can be implemented so to, as far as possible, always behave consistently way when given the same input.
+
+
+\subsection{Design Details}
+
+\paragraph{The Network layer}
+The network layer handles open connections as well as the listen socket. It mostly acts as a wrapper for libevent and provides a simplified interface for the layers above. The main data structure is \texttt{struct net\_server} which is an instance of the net layer which needs to be passed to the majority of functions. It holds references to an event base (libevent's main data structure); open connections; and the listen socket. The layer contains functions for creating, activating and configuring connections.
+\subparagraph{Usage}
+Initialise a new server instance by providing a listen port number and a callback and argument for accepting incoming connections. Once any other setup is complete, the function \texttt{net\_server\_run} can be called which starts the event loop and does not return until the loop exits and as such users must start another thread if they wish for their application to do more than wait for incoming connections.
+\\
+On receiving notification of an accepted connection (via callback), the application should set read, error/disconnect, and optionally write handlers for the newly accepted connection
+
+\subparagraph{Internals}
+
+\paragraph{The Node layer}
+The node layer is the main body and contains code for creating, joining and maintaining the network of nodes and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
+\subparagraph{Usage}
+
+\subparagraph{Internals}
+
+Can be split into a few sub modules: Handling incomming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
+
+\paragraph{Communication Protocol}
+Messages sent between nodes use a TLV (type-length-value) format, in other words they consist of a header, containing a single byte indicating the type of message and a 4 byte value indicating the length of the body, and the body itself which contains the actual information formatted according to the message type
+
+\subsection{Example applications}
+
+\paragraph{1. textsend}
+
+\section{Testing}
+
+\section{Evaluation}
 
 \section{Conclusion}
-
-
 
 \section{References}
 
@@ -144,8 +183,16 @@ Be highly scalable both in terms of number of nodes and the load of individual n
 
 % \printbibliography
 
-\section{Appendices}
+%\section{Appendices}
 
+\section{Appendices}
+\appendix
+\section{Message protocol}
+\begin{tabular}{|l | l|}
+\hline
+\texttt{'S'} & Ask for successor of id \\\hline
+\texttt{'s'} & Return successor of id \\\hline
+\end{tabular}
 
 
 
