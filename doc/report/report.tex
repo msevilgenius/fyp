@@ -99,10 +99,14 @@ Libevent [7] is a cross platform C library which provides a single API for imple
 \\
 \\
 Similar to Libevent, Boost.Asio [8] is a cross platform C++ library providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
-\section{Requirements Analysis}
-Build a high performance library for building DHT based systems with asynchronous I/O for scalability. Nodes should be independent and self organising, requiring no central authority, and be tolerant of joining leaving and failing of nodes in the system.
 
-Functional requirements:
+
+
+
+\section{Requirements Analysis}
+Build a high performance library for building DHT based systems with asynchronous I/O for scalability. Nodes should be independent and self organising, requiring no central authority, and be tolerant of joining, leaving and failing of nodes in the system.
+
+\subsection{Functional requirements}
 \begin{itemize}
 \item
 Creating and joining a network
@@ -123,7 +127,7 @@ Provide callbacks for notifying the application of changes in the availability o
 \end{itemize}
 
 
-Non-functional requirements:
+\subsection{Non-functional requirements}
 \begin{itemize}
 \item
 Provide high performance network communication between nodes
@@ -141,20 +145,32 @@ The design involves multiple modules or layers
 Several design principals were
 
 \subparagraph{No global state}
-this makes it easier to create thread-safe code and allow multiple instances to be instantiated within a single process. It allows for a more functional approach wherein all state has to be passed to functions as a arguments, this will mean that they can be implemented so to, as far as possible, always behave consistently way when given the same input.
+This makes it easier to create thread-safe code and allow multiple instances to be instantiated within a single process. It allows for a more functional approach wherein all state has to be passed to functions as a arguments, this will mean that they can be implemented so to, as far as possible, always behave consistently way when given the same input.
 
+\subparagraph{Layered structure}
+Organising a large amount of code can be
+The code will be organised into separate layers which utilise the layers below them but do not assume knowledge of layers above. this minimises interdependencies between modules.
+
+\subparagraph{Defensive programming}
+check all function input to prevent errors like segfaults
 
 \subsection{Design Details}
 
 \paragraph{The Network layer}
 The network layer handles open connections as well as the listen socket. It mostly acts as a wrapper for libevent and provides a simplified interface for the layers above. The main data structure is \texttt{struct net\_server} which is an instance of the net layer which needs to be passed to the majority of functions. It holds references to an event base (libevent's main data structure); open connections; and the listen socket. The layer contains functions for creating, activating and configuring connections.
 \subparagraph{Usage}
-Initialise a new server instance by providing a listen port number and a callback and argument for accepting incoming connections. Once any other setup is complete, the function \texttt{net\_server\_run} can be called which starts the event loop and does not return until the loop exits and as such users must start another thread if they wish for their application to do more than wait for incoming connections.
+Initialise a new server instance by providing a listen port number and a callback function and argument for accepting incoming connections. Once any other setup is complete, the function \texttt{net\_server\_run} can be called which starts the event loop and does not return until the loop exits and as such users must start another thread if they wish for their application to do more than wait for incoming connections.
 \\
-On receiving notification of an accepted connection (via callback), the application should set read, error/disconnect, and optionally write handlers for the newly accepted connection
+On receiving notification of an accepted connection (via callback), the application should set read, error/disconnect, and optionally write handlers for the newly accepted connection.
+\\
+Users can create outgoing connections by providing a remote IP and port this sets up the connection internally but does not activate it, this allows the user to add data to the write buffer before connecting if desired.
+\\
+Both accepted incoming and outgoing connections use the same interface, allowing setting of callback functions for read, write and other events; setting of the callbacks' custom argument; getting the connection's read and write buffers; setting the connection's timeouts; getting the remote address (useful for some types of messages on incoming connections); and getting the underlying buffer event for finer control
 
 \subparagraph{Internals}
 The net server keeps a list of references to open connections and keeps track of the callbacks that have been set for each one. It also has a mutex lock for the connection list to prevent concurrent modification as it is likely that the event loop thread may accept a connection while another thread requests creation of an outgoing connection.
+\\
+Connections use libevent's \texttt{buffer\_event} which can be used to automatically read incoming data from a socket to a buffer and write data to a socket from a buffer as the socket becomes readable and writeable respectively, they can be set to invoke there callbacks when the buffers contain more or less than a given amount of data.
 
 \paragraph{The Node layer}
 The node layer is the main body and contains code for creating, joining and maintaining the network of nodes and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
@@ -189,12 +205,25 @@ Messages sent between nodes use a TLV (type-length-value) format, in other words
 \section{Appendices}
 \appendix
 \section{Message protocol}
+
+Messages are made up of a single bit defining the type of the message; a 4 byte value for the length of the message body; and the optional, variable length message body.
+
+\subsection{Type bit values}
 \begin{tabular}{|l | l|}
 \hline
-\texttt{'S'} & Ask for successor of id \\\hline
+\texttt{'S'} & Ask node for successor of id \\\hline
 \texttt{'s'} & Return successor of id \\\hline
+\texttt{'P'} & Ask a node for its predecessor \\\hline
+\texttt{'p'} & Returning a node's predecessor \\\hline
+\texttt{'N'} & Notify another node that the sender believes it is that node's predecessor \\\hline
+\texttt{'n'} & Reply acknowledging predecessor notification \\\hline
+\texttt{'A'} & Used to check the availability of a node\\\hline
+\texttt{'a'} & Reply to confirm that a node is operating \\\hline
+\texttt{'M'} & The contents of the message is for the application using the library \\\hline
+\texttt{'0'} & Signifies Unknown message type \\\hline
 \end{tabular}
 
+\subsection{Body Layouts}
 
 
 
