@@ -152,7 +152,7 @@ Organising a large amount of code can be
 The code will be organised into separate layers which utilise the layers below them but do not assume knowledge of layers above. this minimises interdependencies between modules.
 
 \subparagraph{Defensive programming}
-check all function input to prevent errors like segfaults
+Errors i software are inevitable, however they can be reduced and managed with some thought. For example by checking all function input and checking function return codes to catch errors before they cause further problems, allowing
 
 \subsection{Design Details}
 
@@ -175,10 +175,24 @@ Connections use libevent's \texttt{buffer\_event} which can be used to automatic
 \paragraph{The Node layer}
 The node layer is the main body and contains code for creating, joining and maintaining the network of nodes and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
 \subparagraph{Usage}
+Users of this library will setup a node by calling \texttt{node\_create}, then setting up callbacks for incoming messages and join and leave notifications if necessary.
+\\
+Then the user can call \texttt{node\_network\_join} with the address of an existing node to join an existing network or \texttt{node\_network\_create} to create a new network. Both functions will call a given callback when he network has been joined or created respectively.
 
 \subparagraph{Internals}
 A node instance contains a reference to its own net server instance.
 The node layer can be split into a few sub modules: Handling incomming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
+\\
+Routing: the most important functons are \texttt{node\_find\_successor} and \texttt{node\_find\_successor\_remote} as they are used directly and indirectly by most other functions. These functions map IDs to nodes by checking if the current node or it's successor is the sucessor of the given ID and if not asking another node the sme thing until the successor is found.
+\\
+Stabilisation and network maintenance
+\\
+Incoming handling
+\\
+Utility functions:
+
+\paragraph{ID hashes}
+sha1 
 
 \paragraph{Communication Protocol}
 Messages sent between nodes use a TLV (type-length-value) format, in other words they consist of a header, containing a single byte indicating the type of message and a 4 byte value indicating the length of the body, and the body itself which contains the actual information formatted according to the message type
