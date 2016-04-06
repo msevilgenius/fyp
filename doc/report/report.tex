@@ -2,7 +2,8 @@
 \usepackage[utf8]{inputenc}
 
 \usepackage{graphicx}
-
+\usepackage{import}
+\graphicspath{{F:/Documents/fyp/doc/report/fig/}}
 
 \usepackage[backend=bibtex]{biblatex}
 \bibliography{report.bib}
@@ -71,7 +72,7 @@ Existing libraries may be used in this project and their licenses must be follow
 %\section{REPORT BODY}
 
 \section{Background Reading/Existing solutions}
-The chord protocol \cite{chord} uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
+\paragraph{The chord protocol} \cite{chord} uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
 Nodes are mapped into the same keyspace used for identifiers for the application
 Each node knows how to find the node that an identifier maps to, illustrated in fig 1. If the id is between the current node and its successor then it maps to the successor, otherwise it asks the furthest node it knows about that is not past the id in the keyspace. The succeeding nodes that a node has knowledge of are stored in a 'finger' table (illustrated as dashed arrows in fig 1.) These are not necessary for functionality but they reduce the number of steps when mapping a key to a node.
 \begin{figure}
@@ -88,20 +89,20 @@ The stabilisation that chord nodes run periodically is important to keep the net
 \end{figure}
 \\
 \\
-Memcached \cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
+\paragraph{Memcached} \cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
 
 Memcached uses spare memory on web servers to create a distributed in-memory cache which can be used to alleviate server load. This provides several benefits when compared to having each server managing it's own individual cache: the combined cache is much larger than individual caches; cached data is consistent any server requesting the a key in the cache will get the same value, whereas separate caches may not update data at the same time; improved scalability, as more servers are added to handle increasing load the size of the cache increases, making large scaling much easier than it would be with individual caches per server.
 \\
 \\
-Mace \cite{mace} is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” \cite{mace_quote} It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems. The restrictions mace imposes in this way allow for better options for debugging a distributed system.
+\paragraph{Mace} \cite{mace} is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” \cite{mace_quote} It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems. The restrictions mace imposes in this way allow for better options for debugging a distributed system.
 
 Nodes in mace are made up of one or more layers and each layer is built on an event driven state machine. Like Chord, Mace creates a virtual overlay network in which each node keeps a record of adjacent nodes, periodically updating these records and notifying the application when changes occur.
 \\
 \\
-Libevent \cite{libevent} is a cross platform C library which provides a single API for implementing event driven network servers using one of a number of mechanisms systems provide for event notification, to allow for asynchronous I/O operations. Libevent checks for events and runs the callbacks specified for each event in the queue. An event can be a notification for a socket becoming read- or write-able, a new connection on a listen socket or a timer event among other things. Libevent also provides bufferevents to simplify the task of using read and write buffers with socket events. Libevent also includes a simple HTTP, DNS and RPC (remote procedure call) implementations.
+\paragraph{Libevent} \cite{libevent} is a cross platform C library which provides a single API for implementing event driven network servers using one of a number of mechanisms systems provide for event notification, to allow for asynchronous I/O operations. Libevent checks for events and runs the callbacks specified for each event in the queue. An event can be a notification for a socket becoming read- or write-able, a new connection on a listen socket or a timer event among other things. Libevent also provides bufferevents to simplify the task of using read and write buffers with socket events. Libevent also includes a simple HTTP, DNS and RPC (remote procedure call) implementations.
 \\
 \\
-Similar to Libevent, Boost.Asio \cite{basio} is a cross platform C++ library providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
+\paragraph{Boost.Asio} \cite{basio} is a cross platform C++ library, similar to libevent, providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
 
 
 
@@ -159,8 +160,19 @@ Errors in software are inevitable, however they can be reduced and managed with 
 
 \subsection{Design Details}
 
+\paragraph{Overlay network}
+To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is somewhat based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own.
+
+\begin{figure}
+\centering
+\def\svgwidth{\columnwidth}
+\input{./fig/nodes_to_overlay_map.pdf_tex}
+\caption{Mapping of nodes on a real network (e.g. the internet) to a virtual overlay network}
+\end{figure}
+
 \paragraph{The Network layer}
 The network layer handles open connections as well as the listen socket. It mostly acts as a wrapper for libevent and provides a simplified interface for the layers above. The main data structure is \texttt{struct net\_server} which is an instance of the net layer which needs to be passed to the majority of functions. It holds references to an event base (libevent's main data structure); open connections; and the listen socket. The layer contains functions for creating, activating and configuring connections.
+
 \subparagraph{Usage}
 Initialise a new server instance by providing a listen port number and a callback function and argument for accepting incoming connections. Once any other setup is complete, the function \texttt{net\_server\_run} can be called which starts the event loop and does not return until the loop exits and as such users must start another thread if they wish for their application to do more than wait for incoming connections.
 \\
@@ -176,7 +188,7 @@ The net server keeps a list of references to open connections and keeps track of
 Connections use libevent's \texttt{buffer\_event} which can be used to automatically read incoming data from a socket to a buffer and write data to a socket from a buffer as the socket becomes readable and writeable respectively, they can be set to invoke there callbacks when the buffers contain more or less than a given amount of data.
 
 \paragraph{The Node layer}
-The node layer is the main body and contains code for creating, joining and maintaining the network of nodes and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
+The node layer is the main body and contains code for creating, joining and maintaining the overlay network  and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
 
 % details on overlay network, finger table etc. go here somewhere
 
