@@ -177,22 +177,36 @@ Connections use libevent's \texttt{buffer\_event} which can be used to automatic
 
 \paragraph{The Node layer}
 The node layer is the main body and contains code for creating, joining and maintaining the network of nodes and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
+
+% details on overlay network, finger table etc. go here somewhere
+
 \subparagraph{Usage}
+% put all functions which should be usable by the app here
 Users of this library will setup a node by calling \texttt{node\_create}, then setting up callbacks for incoming messages and join and leave notifications if necessary.
 \\
 Then the user can call \texttt{node\_network\_join} with the address of an existing node to join an existing network or \texttt{node\_network\_create} to create a new network. Both functions will call a given callback when he network has been joined or created respectively.
 
 \subparagraph{Internals}
 A node instance contains a reference to its own net server instance.
-The node layer can be split into a few sub modules: Handling incomming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
+The node layer can be split into a few sub modules: Handling incoming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
 \\
-Routing: the most important functons are \texttt{node\_find\_successor} and \texttt{node\_find\_successor\_remote} as they are used directly and indirectly by most other functions. These functions map IDs to nodes by checking if the current node or it's successor is the sucessor of the given ID and if not asking another node the sme thing until the successor is found.
+Routing: the most important functions are \texttt{node\_find\_successor} and \\\texttt{node\_find\_successor\_remote} as they are used directly and indirectly by most other functions. These functions map IDs to nodes by checking if the current node or it's successor is the successor of the given ID and if not asking another node the same thing until the successor is found.
 \\
-Stabilisation and network maintenance
+Stabilisation and network maintenance: There are three groups of functions which are run periodically, they are: stabilise, which involves ordering nodes correctly in the overlay network; fix fingers, which ensures the node's finger table is up to date; and periodic checks of the availability of neighbouring nodes.
+% this is poorly worded
+The stabilise function updates the node's successor if necessary, by asking the node currently recorded as the successor for it's predecessor, and then notifies the updated successor that the current node is it's predecessor.
+The fix fingers function iterates through the positions in the finger table and finds the relevant node, again using \texttt{node\_find\_successor}, and updates the table.
+Periodically The availability of the node's predecessor is checked by sending it a message.
 \\
-Incoming handling
+Incoming handling: When the network layer notifies the node layer that an incoming connection, the node layer sets up the callbacks for the connection. Once the header of the incoming message has been received, the type and content length are read and the relevant callbacks for each type of message are setup or called immediately if the content is already all in the connection's read buffer. There are functions for handling each type of incoming message.
 \\
-Utility functions:
+Utility functions: There are several utility functions used by several other functions which simplify their own code.
+%net interface
+\texttt{node\_send\_message} takes a \texttt{struct node\_msg} formats it and writes it to an open connection, the similarly named \texttt{node\_connect\_and\_send\_message} opens a new connection to the specified node and calls \texttt{node\_send\_message} with it.
+%hash id helpers
+\texttt{node\_id\_compare} takes two identifier hashes and returns 1, 0, or -1 to indicate that the first is greater than, equal to, or less than the second respectively.
+\texttt{node\_id\_in\_range} takes three ids identifier hashes and returns 'true' if the first falls between the second and third in the identifier space.
+The \texttt{get\_id} function takes a string and maps it to an identifier hash
 
 \paragraph{ID hashes}
 sha1 
