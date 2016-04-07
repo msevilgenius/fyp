@@ -230,13 +230,19 @@ The \texttt{get\_id} function takes a string and maps it to an identifier hash
 
 \paragraph{ID hashes}
 The hashing function chosen for the identifier space is SHA-1. SHA-1 provides 160 bit hashes which is a relatively small space compared to other cryptographic hash functions and has a higher probability of collisions. This however, is not a cause for concern as collisions would only have an effect on the system if two nodes were to have the same ID, which due to the relatively low number of nodes is highly unlikely.
+% Do I need to cite this? probably I guess
+The library uses the OpenSSL \cite{openssl} SHA-1 implementation.
 
 \paragraph{Communication Protocol}
-Messages sent between nodes use a TLV (type-length-value) format, in other words they consist of a header, containing a single byte indicating the type of message and a 4 byte value indicating the length of the body, and the body itself which contains the actual information formatted according to the message type
+Messages sent between nodes use a TLV (type-length-value) format, in other words they consist of a header, containing a single byte indicating the type of message and a 4 byte value indicating the length of the body, and the body itself which contains the actual information formatted according to the message type.
 
 \subsection{Using the Library}
 
-Figure \ref{fig:startlib} shows an overview of the process of setting up and running a node
+Most interaction with the library is with the node layer, though some interaction with the net layer is necessary.
+The first stage is initialising a node with a listen port and a unique name used for the nodes identifier by calling \texttt{node\_create}. This allocates all necessary data structures and sets up the network layer.
+Next calling \texttt{node\_network\_create} or \texttt{node\_network\_join} providing a callback for when the network has been successfully joined and, in the latter case, the address of an existing node in the network.
+This starts the event loop and as such does not return until the node is shut down, This is why the callback is necessary, the application should utilise it to start one or more threads for its functionality.
+Figure \ref{fig:startlib} shows an overview of the process of setting up and running a node, and figure \ref{fig:runlib} shows the main interactions that an application will have with the library as well as the major internal interactions
 
 \begin{figure}
 \centering
@@ -262,14 +268,19 @@ Figure \ref{fig:startlib} shows an overview of the process of setting up and run
 
 \paragraph{1. textsend}
 
-This is a simple command line application to demonstrate basic functionality. It will join an existing network if given the address of a node, or create a new one. Once in a network this application takes text input from \texttt{stdin} and sends it to the node it maps to.
+This is a simple command line application to demonstrate basic functionality. It will join an existing network if given the address of a node, or create a new one. Once in a network this application takes text input from \texttt{stdin} and sends it to the node it maps to. Upon receiving a message from a node it is printed to \texttt{stdout}
 
 \section{Testing}
+
+\subsection{Unit testing}
+
+\subsection{Simulated real world testing}
 
 \section{Evaluation}
 
 \subsection{Future work}
 
+There are several enhancements I would like to make beyond the current relatively simple functionality
 
 \section{Conclusion}
 

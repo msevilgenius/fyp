@@ -60,11 +60,11 @@
     \put(0.18639543,0.04450016){\color[rgb]{1,1,1}\makebox(0,0)[lb]{\smash{event loop}}}%
     \put(0.27466836,0.14597766){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{listen socket}}}%
     \put(0.44868241,0.25490896){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{create\_connection}}}%
-    \put(0.28346616,0.41829499){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{incoming\_connection}}}%
+    \put(0.2160557,0.41829499){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{incoming\_connection}}}%
     \put(0.09019902,0.18573221){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{timeout}}}%
     \put(0.45614242,0.46222368){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{find\_successor(id)}}}%
     \put(0.64401538,0.43049631){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{reply\_cb}}}%
-    \put(0.36378248,0.23721822){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{configure/write}}}%
+    \put(0.36103104,0.23721822){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{configure/write}}}%
     \put(0.58976696,0.203878){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{connection read}}}%
     \put(0.68890374,0.64912589){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{successor found cb}}}%
     \put(0.82391723,0.67783624){\color[rgb]{0.30196078,0.30196078,0.30196078}\makebox(0,0)[lb]{\smash{incoming message cb}}}%

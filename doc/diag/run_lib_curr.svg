@@ -893,15 +893,15 @@
        sodipodi:nodetypes="ccc" />
     <text
        xml:space="preserve"
-       style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
-       x="427.25058"
+       style="font-size:18px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
+       x="329.25058"
        y="420.492"
        id="text2987-4-5-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
-         x="427.25058"
+         x="329.25058"
          y="420.492"
-         style="font-size:18px;font-style:oblique;font-weight:normal;text-align:center;text-anchor:middle;fill:#4d4d4d;-inkscape-font-specification:Sans Oblique"
+         style="font-size:18px;font-style:oblique;font-weight:normal;text-align:start;text-anchor:start;fill:#4d4d4d;-inkscape-font-specification:Sans Oblique"
          id="tspan9679">incoming\_connection</tspan></text>
     <path
        sodipodi:nodetypes="ccc"
@@ -991,12 +991,12 @@
        sodipodi:linespacing="125%"
        id="text8430-2"
        y="683.73785"
-       x="544.01288"
+       x="540.01288"
        style="font-size:18px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4d4d4d;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"><tspan
          style="font-size:18px;font-style:oblique;font-weight:normal;text-align:center;text-anchor:middle;fill:#4d4d4d;-inkscape-font-specification:Sans Oblique"
          y="683.73785"
-         x="544.01288"
+         x="540.01288"
          sodipodi:role="line"
          id="tspan10280">configure/write</tspan></text>
     <path
