@@ -2,7 +2,10 @@
 \usepackage[utf8]{inputenc}
 
 \usepackage{graphicx}
-\usepackage{import}
+\usepackage{color}
+\usepackage{transparent}
+\usepackage[export]{adjustbox}[2011/08/13]
+%\usepackage{import}
 \graphicspath{{F:/Documents/fyp/doc/report/fig/}}
 
 \usepackage[backend=bibtex]{biblatex}
@@ -17,7 +20,7 @@
 	\vspace{1cm}
 	{\scshape\Large Final year project\par}
 	\vspace{1.5cm}
-	{\huge\bfseries FYP-DHT\par}
+	{\huge\bfseries Scalable Distributed Computing using Hashing with Asynchronous I/O\par}
 	\vspace{2cm}
 	{\Large\scshape Michael Sledge\par}
 	{\Large CN:121677\par}
@@ -96,6 +99,8 @@ Memcached uses spare memory on web servers to create a distributed in-memory cac
 \\
 \paragraph{Mace} \cite{mace} is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” \cite{mace_quote} It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems. The restrictions mace imposes in this way allow for better options for debugging a distributed system.
 
+Mace consists of it's own domain-specific C++ language extension to allow users to implement node functionality, a set of libraries which implement the functionality necessary to create and maintain distributed systems as well as common features for such systems. This allows its users to concentrate on the system being distributed and spend less time on the implementation of the distribution itself.
+
 Nodes in mace are made up of one or more layers and each layer is built on an event driven state machine. Like Chord, Mace creates a virtual overlay network in which each node keeps a record of adjacent nodes, periodically updating these records and notifying the application when changes occur.
 \\
 \\
@@ -161,13 +166,14 @@ Errors in software are inevitable, however they can be reduced and managed with 
 \subsection{Design Details}
 
 \paragraph{Overlay network}
-To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is somewhat based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own.
+To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is somewhat based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own. Figure \ref{fig:rtovmap} shows how nodes in a real network map into the virtual network.
 
 \begin{figure}
 \centering
 \def\svgwidth{\columnwidth}
 \input{./fig/nodes_to_overlay_map.pdf_tex}
-\caption{Mapping of nodes on a real network (e.g. the internet) to a virtual overlay network}
+\caption{Mapping of nodes on a real network (e.g. the internet) to a virtual overlay network. Each node is aware of at least the next node in the ring}
+\label{fig:rtovmap}
 \end{figure}
 
 \paragraph{The Network layer}
@@ -186,6 +192,8 @@ Both accepted incoming and outgoing connections use the same interface, allowing
 The net server keeps a list of references to open connections and keeps track of the callbacks that have been set for each one. It also has a mutex lock for the connection list to prevent concurrent modification as it is likely that the event loop thread may accept a connection while another thread requests creation of an outgoing connection.
 \\
 Connections use libevent's \texttt{buffer\_event} which can be used to automatically read incoming data from a socket to a buffer and write data to a socket from a buffer as the socket becomes readable and writeable respectively, they can be set to invoke there callbacks when the buffers contain more or less than a given amount of data.
+\\
+Most of the network layer's functionality is that for interacting with connections
 
 \paragraph{The Node layer}
 The node layer is the main body and contains code for creating, joining and maintaining the overlay network  and routing, these are together due to the fact that joining and maintaining the network requires routing messages between nodes. Much like the net layer its main data type is a handle to a node instance, the interface similarly consists of a function to initialise a new node instance and functions to join an existing network or create a new one. 
@@ -221,10 +229,34 @@ Utility functions: There are several utility functions used by several other fun
 The \texttt{get\_id} function takes a string and maps it to an identifier hash
 
 \paragraph{ID hashes}
-sha1 
+The hashing function chosen for the identifier space is SHA-1. SHA-1 provides 160 bit hashes which is a relatively small space compared to other cryptographic hash functions and has a higher probability of collisions. This however, is not a cause for concern as collisions would only have an effect on the system if two nodes were to have the same ID, which due to the relatively low number of nodes is highly unlikely.
 
 \paragraph{Communication Protocol}
 Messages sent between nodes use a TLV (type-length-value) format, in other words they consist of a header, containing a single byte indicating the type of message and a 4 byte value indicating the length of the body, and the body itself which contains the actual information formatted according to the message type
+
+\subsection{Using the Library}
+
+Figure \ref{fig:startlib} shows an overview of the process of setting up and running a node
+
+\begin{figure}
+\centering
+\def\svgwidth{\columnwidth}
+\input{./fig/start_lib.pdf_tex}
+\caption{Process of setting up a node with the library, first call setup with a name and listen port number, then join or create a network, once this is done a given callback is called to allow the node to start its own functionality which should be run in separate threads.}
+\label{fig:startlib}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\def\svgwidth{1.4\columnwidth}
+\begin{scriptsize}
+\makebox[\columnwidth][c]{\input{./fig/run_lib_curr.pdf_tex}}
+\end{scriptsize}
+%\includegraphics[width=1.6\textwidth,center]{run_lib_curr.png}%
+\caption{Main interactions with and within the library once running }
+\label{fig:runlib}
+\end{figure}
 
 \subsection{Example applications}
 
@@ -235,6 +267,9 @@ This is a simple command line application to demonstrate basic functionality. It
 \section{Testing}
 
 \section{Evaluation}
+
+\subsection{Future work}
+
 
 \section{Conclusion}
 
