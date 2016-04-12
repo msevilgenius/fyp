@@ -166,7 +166,10 @@ Errors in software are inevitable, however they can be reduced and managed with 
 \subsection{Design Details}
 
 \paragraph{Overlay network}
-To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is somewhat based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own. Figure \ref{fig:rtovmap} shows how nodes in a real network map into the virtual network.
+To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is somewhat based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter or 'name'. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own. Figure \ref{fig:rtovmap} shows how nodes in a real network map into the virtual network.
+\\
+To maintain the network, each node is aware of several other nodes, specifically their immediate successor and predecessor, as well as several nodes in the finger table for improved lookup performance.
+\subparagraph{Routing} The main functionality of the network is mapping identifiers to nodes
 
 \begin{figure}
 \centering
@@ -174,6 +177,15 @@ To facilitate the self-organisation of nodes and communication between them, a v
 \input{./fig/nodes_to_overlay_map.pdf_tex}
 \caption{Mapping of nodes on a real network (e.g. the internet) to a virtual overlay network. Each node is aware of at least the next node in the ring}
 \label{fig:rtovmap}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\def\svgwidth{\columnwidth}
+\input{./fig/finger_table_improvement.pdf_tex}
+\caption{Use of a finger table improves lookup performance by reducing the number of hops to find the node an ID maps to.}
+\label{fig:fingersRbttr}
 \end{figure}
 
 \paragraph{The Network layer}
@@ -282,7 +294,12 @@ This is a simple command line application to demonstrate basic functionality. It
 
 There are several enhancements I would like to make beyond the current relatively simple functionality
 
+%  Configurability
+%  Security
+
 \section{Conclusion}
+
+
 
 \section{References}
 

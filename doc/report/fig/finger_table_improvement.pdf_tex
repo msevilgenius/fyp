@@ -1,0 +1,110 @@
+%% Creator: Inkscape 0.48.3.1, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'finger_table_improvement.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{443.75440766bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.52064855)%
+    \put(0,0){\includegraphics[width=\unitlength]{finger_table_improvement.pdf}}%
+    \put(0.61987447,1.23150842){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 16\end{minipage}}}%
+    \put(0.47700739,1.20481132){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.09320974\unitlength}\raggedright 42?\end{minipage}}}%
+    \put(0.40279441,1.10487076){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.09320974\unitlength}\raggedright 42?\end{minipage}}}%
+    \put(0.31836528,1.0562396){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.09320974\unitlength}\raggedright 42?\end{minipage}}}%
+    \put(0.21367319,1.08866037){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.09320974\unitlength}\raggedright 42?\end{minipage}}}%
+    \put(-0.00111447,0.94411771){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.36509694\unitlength}\raggedright 42-\textgreater43\end{minipage}}}%
+    \put(0.28089982,0.8839807){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.43703045\unitlength}\raggedright 42-\textgreater43\end{minipage}}}%
+    \put(0.55039755,0.93598903){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.43429878\unitlength}\raggedright 42-\textgreater43\end{minipage}}}%
+    \put(0.67400178,1.11362789){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.37966575\unitlength}\raggedright 42-\textgreater43\end{minipage}}}%
+    \put(0.56442558,1.06100628){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 20\end{minipage}}}%
+    \put(0.43867891,0.96277183){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 25\end{minipage}}}%
+    \put(0.22709341,0.96059614){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 31\end{minipage}}}%
+    \put(0.10463929,1.04949686){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 37\end{minipage}}}%
+    \put(0.04389995,1.18603918){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 43\end{minipage}}}%
+    \put(0.05922677,1.3345953){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 50\end{minipage}}}%
+    \put(0.21686943,1.49830484){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 56\end{minipage}}}%
+    \put(0.4400971,1.49966716){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 02\end{minipage}}}%
+    \put(0.57051553,1.39332732){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 12\end{minipage}}}%
+    \put(0.61914585,0.52562237){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 16\end{minipage}}}%
+    \put(0.36502875,0.45160893){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.09320974\unitlength}\raggedright 42?\end{minipage}}}%
+    \put(0.21320215,0.38174414){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.09320974\unitlength}\raggedright 42?\end{minipage}}}%
+    \put(-0.00158551,0.2372015){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.44067266\unitlength}\raggedright 42-\textgreater43\end{minipage}}}%
+    \put(0.52974296,0.20757127){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.38603958\unitlength}\raggedright 42-\textgreater43\end{minipage}}}%
+    \put(0.56369698,0.35512022){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 20\end{minipage}}}%
+    \put(0.43795031,0.25688578){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 25\end{minipage}}}%
+    \put(0.22636482,0.2547101){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 31\end{minipage}}}%
+    \put(0.10391067,0.34361077){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 37\end{minipage}}}%
+    \put(0.04317134,0.48015315){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 43\end{minipage}}}%
+    \put(0.74692656,0.64669794){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 17\end{minipage}}}%
+    \put(0.74692656,0.6172431){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 18\end{minipage}}}%
+    \put(0.74692656,0.5583334){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 24\end{minipage}}}%
+    \put(0.74692656,0.52887856){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 32\end{minipage}}}%
+    \put(0.74692656,0.58778826){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 20\end{minipage}}}%
+    \put(0.74692656,0.49942372){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.17162419\unitlength}\raggedright 48\end{minipage}}}%
+    \put(0.80583625,0.64669794){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N20\end{minipage}}}%
+    \put(0.80583625,0.6172431){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N20\end{minipage}}}%
+    \put(0.80583625,0.58778826){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N20\end{minipage}}}%
+    \put(0.80583625,0.55833342){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N25\end{minipage}}}%
+    \put(0.80583625,0.52887857){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N31\end{minipage}}}%
+    \put(0.80583625,0.49942373){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N50\end{minipage}}}%
+    \put(0.05849819,0.62870921){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 50\end{minipage}}}%
+    \put(0.21614084,0.79241876){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 56\end{minipage}}}%
+    \put(0.4393685,0.79378109){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 02\end{minipage}}}%
+    \put(0.56978693,0.68744125){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 12\end{minipage}}}%
+    \put(0.11834736,0.18222118){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 32\end{minipage}}}%
+    \put(0.11834736,0.15276633){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 33\end{minipage}}}%
+    \put(0.11834736,0.09385663){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 39\end{minipage}}}%
+    \put(0.11834736,0.06440179){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 47\end{minipage}}}%
+    \put(0.11834736,0.12331149){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 35\end{minipage}}}%
+    \put(0.11834736,0.03494695){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.04735983\unitlength}\raggedright 63\end{minipage}}}%
+    \put(0.17725704,0.18222118){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N37\end{minipage}}}%
+    \put(0.17725704,0.15276633){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N37\end{minipage}}}%
+    \put(0.17725704,0.12331149){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N37\end{minipage}}}%
+    \put(0.17725704,0.09385665){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N43\end{minipage}}}%
+    \put(0.17725704,0.06440181){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N50\end{minipage}}}%
+    \put(0.17725704,0.03494696){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.05998334\unitlength}\raggedright N02\end{minipage}}}%
+  \end{picture}%
+\endgroup%
