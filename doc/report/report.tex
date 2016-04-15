@@ -5,13 +5,20 @@
 \usepackage{color}
 \usepackage{transparent}
 \usepackage[export]{adjustbox}[2011/08/13]
+\usepackage{tabularx}
 %\usepackage{import}
 \graphicspath{{fig/}}
 %\graphicspath{{F:/Documents/fyp/doc/report/fig/}}
 \usepackage{array}
 
-\usepackage[backend=bibtex]{biblatex}
-\bibliography{report.bib}
+\usepackage[ %backend=biber
+    style=numeric,
+    sorting=none]{biblatex}
+%\bibliography{report.bib}
+
+\nocite{*}
+\addbibresource{report.bib}
+
 
 
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
@@ -41,6 +48,17 @@
 
 \section*{Statement of Originality}
 This report is submitted as part requirement for the degree of Computer Science at the University of Sussex. It is the product of my own labour except where indicated in the text. The report may be freely copied and distributed provided the source is acknowledged.
+\begin{table}[b]
+\centering
+\bgroup
+\def\arraystretch{2.5}
+\begin{tabularx}{0.8\textwidth}{|l c l|X|}
+\hline
+& Signature & & \\\hline
+\end{tabularx}
+\egroup
+\end{table}
+
 \newpage
 
 \section*{Summary}
@@ -125,7 +143,12 @@ Libevent provides a single API for event notification which can use a range of u
 
 Libevent is used in a range of widely used applications, systems and tools, including Memcached, the Chromium web browser, and the Transmission Bittorrent client, among many others.
 \\
+%using libevent
+Using Libevent involves setting up an \texttt{event\_base}, adding one or more events to it and running the event loop. Events can be setup to be triggered by a number of conditions: a file descriptor being ready to read from and/or write to; a timeout expiration; a signal occurring; or manual triggering. Internally Libevent's event loop checks for triggered events and marks them active, then runs the user set callbacks for all active events which have the highest priority and then moves to the next iteration.
+Also provided are buffer events which use internal callbacks to read from the events file descriptor into a buffer and write from another buffer to the file descriptor when the file descriptor is ready and then call user set callbacks when the buffers are above or below user set watermarks.
 \\
+\\
+
 \paragraph{Boost.Asio} \cite{basio} is a cross platform C++ library, similar to libevent, providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
 
 
@@ -321,8 +344,17 @@ Figure \ref{fig:startlib} shows an overview of the process of setting up and run
 \paragraph{1. textsend}
 
 This is a simple command line application to demonstrate basic functionality. It will join an existing network if given the address of a node, or create a new one. Once in a network this application takes text input from \texttt{stdin} and sends it to the node it maps to. Upon receiving a message from a node it is printed to \texttt{stdout}
-
+\\
+\\
 %pub/sub, storage, group communication etc implementation expectations
+
+There are a few other applications which could be implemented as follows
+
+\paragraph{2. Publish subscribe system}
+
+
+\paragraph{3. Distributed storage}
+
 
 \section{Testing}
 
@@ -330,7 +362,7 @@ Much of the code in this project is difficult to test because of the fact that m
 
 \subsection{Simulated real world testing}
 
-Once the minimal required functionality had been implemented, I was able to test the functionality using a simple application with minimal functionality
+Once the minimal required functionality had been implemented, I was able to test the functionality using a simple application with minimal functionality.
 
 \section{Evaluation}
 
@@ -349,13 +381,14 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 
 \section{Conclusion}
 
-have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication
+have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
 
+Ease of use can be difficult to evaluate, however the \texttt{textsend} application gives an indication that the library provides an easy to use interface
 % evaluation summary
 
 \subsection{Future work}
 
-There are several enhancements I would like to make beyond the current functionality,
+There are several enhancements I would like to make beyond the current functionality, which could make real world usage more viable.
 %  Configurability
 \paragraph{Configurability and tuning} Allowing configuration and tuning of parameters such as the stabilisation interval could help improve performance and stability of the network, depending on the use case, for instance one system may expect the availability of nodes to remain fairly constant so heigh frequency stabilisation may be unnecessary, while another may expect a high rate of \textit{churn} (nodes joining and leaving frequently) and so would need much more frequent stabilisation.
 
@@ -364,13 +397,12 @@ There are several enhancements I would like to make beyond the current functiona
 Additionally, allowing use of domain names for addressing nodes in addition to SSL would allow for implementation of a system which only allows specific nodes to join the system.
 
 % network info
-
+\paragraph{Network monitoring} Currently, there is no means of monitoring the state of the network as a whole, other than using the debugging info from each individual node. It should be relatively simple to add more types of message for gathering information about the network, for instance the number of nodes could be determined by a message sent around the entire ring from each node to its successor until it arrived at the node which originated the message.
 
 \section{References}
 
-%\bibliographystyle{plain}
+%\bibliographystyle{unsrt}
 %\bibliography{report}
-
 \printbibliography
 
 
