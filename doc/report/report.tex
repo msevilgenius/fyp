@@ -8,6 +8,7 @@
 %\usepackage{import}
 \graphicspath{{fig/}}
 %\graphicspath{{F:/Documents/fyp/doc/report/fig/}}
+\usepackage{array}
 
 \usepackage[backend=bibtex]{biblatex}
 \bibliography{report.bib}
@@ -59,10 +60,9 @@ By implementing a consistent means of organising computing nodes and enabling co
 The system will be scalable and allow a large number of nodes to communicate efficiently.
 
 
-
-
 % explain the structure of the report.
 This report will cover professional and ethical considerations, related research and systems, more detailed technical requirements, details of the design and implementation of the system and evaluation of its functionality and performance,
+
 
 \subsection{Professional Considerations}
 The BCS Code of Conduct \cite{bcscoc} sets out the following standards which may be relevant to this project: 2 c) “develop your professional knowledge, skills and competence on a continuing basis, maintaining awareness of technological developments, procedures, and standards that are relevant to your field.” and 2 d) “ensure that you have the knowledge and understanding of Legislation* and that you comply with such Legislation, in carrying out your professional responsibilities.”
@@ -76,21 +76,29 @@ Existing libraries may be used in this project and their licenses must be follow
 %\section{REPORT BODY}
 
 \section{Background Reading/Existing solutions}
+\subsection{Distributed and DHT based systems}
+
 \paragraph{The chord protocol} \cite{chord} uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
-Nodes are mapped into the same keyspace used for identifiers for the application
-Each node knows how to find the node that an identifier maps to, illustrated in fig 1. If the id is between the current node and its successor then it maps to the successor, otherwise it asks the furthest node it knows about that is not past the id in the keyspace. The succeeding nodes that a node has knowledge of are stored in a 'finger' table (illustrated as dashed arrows in fig 1.) These are not necessary for functionality but they reduce the number of steps when mapping a key to a node.
+Nodes are mapped into the same keyspace used for identifiers for the application.
+Each node knows how to find the node that an identifier maps to, illustrated in fig 1. If the id is between the current node and its successor then it maps to the successor, otherwise it asks the furthest node it knows about that is not past the id in the keyspace. The succeeding nodes that a node has knowledge of are stored in a 'finger' table (illustrated as dashed arrows in figure \ref{fig:chord_succ}.) These are not necessary for functionality but they reduce the number of steps when mapping a key to a node.
+
 \begin{figure}
 \centering
 \includegraphics{chord_find-successor.png}
 \caption{Finding the successor for key 19. Dashed arrows show which nodes a node has knowledge of (some have been omitted for clarity).}
+\label{fig:chord_succ}
 \end{figure}
 
 The stabilisation that chord nodes run periodically is important to keep the network functional as the availability of nodes changes. Stabilisation is executed as follows: the node checks if there is a node between itself and its recorded successor, if there is it updates its recorded successor; then the node notifies its recorded successor of its existence so it can update its predecessor record if necessary. Nodes also periodically update their finger tables, and check whether their predecessor is still accessible.
+Figure \ref{fig:chord_join_stab} shows the stabilisation process after a new node has joined the network.
 \begin{figure}
 \centering
 \includegraphics{chord_joining.png}
 \caption{Node joining and stabilisation. (a) A chord network in a stable state. (b) new node n15 joins having found its successor (c) n15 runs its stabilisation and now n18 is aware of n15. (d) n12 runs its stabilisation and the network is back to as stable state}
+\label{fig:chord_join_stab}
 \end{figure}
+
+There is an more extensive discussion of the chord protocol, along with my specific implementation in the design section.
 \\
 \\
 \paragraph{Memcached} \cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
@@ -101,9 +109,6 @@ Memcached uses spare memory on web servers to create a distributed in-memory cac
 % pastry, tapestry, bamboo etc.
 
 
-
-\\
-\\
 \paragraph{Mace} \cite{mace} is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” \cite{mace_quote} It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems. The restrictions mace imposes in this way allow for better options for debugging a distributed system.
 
 Mace consists of it's own domain-specific C++ language extension to allow users to implement node functionality, a set of libraries which implement the functionality necessary to create and maintain distributed systems as well as common features for such systems. This allows its users to concentrate on the system being distributed and spend less time on the implementation of the distribution itself.
@@ -111,6 +116,9 @@ Mace consists of it's own domain-specific C++ language extension to allow users 
 Nodes in mace are made up of one or more layers and each layer is built on an event driven state machine. Like Chord, Mace creates a virtual overlay network in which each node keeps a record of adjacent nodes, periodically updating these records and notifying the application when changes occur.
 \\
 \\
+
+\subsection{Asyncronous I/O}
+
 \paragraph{Libevent} \cite{libevent} is a cross platform C library which provides a single API for implementing event driven network servers using one of a number of mechanisms systems provide for event notification, to allow for asynchronous I/O operations. Libevent checks for events and runs the callbacks specified for each event in the queue. An event can be a notification for a socket becoming read- or write-able, a new connection on a listen socket or a timer event among other things. Libevent also provides bufferevents to simplify the task of using read and write buffers with socket events. Libevent also includes a simple HTTP, DNS and RPC (remote procedure call) implementations.
 
 Libevent provides a single API for event notification which can use a range of underlying mechanisms provided by different operating systems (currently /dev/poll, kqueue(2), event ports, POSIX select(2), Windows select(), poll(2), and epoll(4)).
@@ -314,13 +322,18 @@ Figure \ref{fig:startlib} shows an overview of the process of setting up and run
 
 This is a simple command line application to demonstrate basic functionality. It will join an existing network if given the address of a node, or create a new one. Once in a network this application takes text input from \texttt{stdin} and sends it to the node it maps to. Upon receiving a message from a node it is printed to \texttt{stdout}
 
+%pub/sub, storage, group communication etc implementation expectations
+
 \section{Testing}
 
 Much of the code in this project is difficult to test because of the fact that much of it depends on network communication and having the system running, for that reason most testing was done by setting up a small network of nodes running a simple application.
 
 \subsection{Simulated real world testing}
 
+Once the minimal required functionality had been implemented, I was able to test the functionality using a simple application with minimal functionality
+
 \section{Evaluation}
+
 
 
 
@@ -332,11 +345,16 @@ have succeeded in building a library for implementing distributed systems, which
 
 \subsection{Future work}
 
-There are several enhancements I would like to make beyond the current relatively simple functionality,
+There are several enhancements I would like to make beyond the current functionality,
 %  Configurability
+\paragraph{Configurability and tuning} Allowing configuration and tuning of parameters such as the stabilisation interval could help improve performance and stability of the network, depending on the use case, for instance one system may expect the availability of nodes to remain fairly constant so heigh frequency stabilisation may be unnecessary, while another may expect a high rate of \textit{churn} (nodes joining and leaving frequently) and so would need much more frequent stabilisation.
 
 %  Security
-\paragraph{Security} I would like to implement SSL based connections between nodes to allow for secure communication and to allow for verification of message origin
+\paragraph{Security} I would like to implement SSL based connections between nodes to allow for secure communication and verification of message origin.
+Additionally, allowing use of domain names for addressing nodes in addition to SSL would allow for implementation of a system which only allows specific nodes to join the system.
+
+% network info
+
 
 \section{References}
 
@@ -367,7 +385,8 @@ Messages are made up of a single bit defining the type of the message; a 4 byte 
 \end{tabular}
 
 \subsection{Body Layouts}
-\begin{tabular}{|l | l | l|}
+\newcolumntype{L}{>{\arraybackslash}m{9cm}}
+\begin{tabular}{|l | l | L|}
 \hline
 \texttt{'S'} & ID & The ID to find the successor of\\\hline
 \texttt{'s'} & 'Y' ID IP port & the char 'Y' to indicate success followed by the i.d. i.p. and port of the node found\\\hline
