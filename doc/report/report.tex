@@ -38,11 +38,11 @@
 	{\large 2016\par}
 \end{titlepage}
 
-\section{Statement of Originality}
+\section*{Statement of Originality}
 This report is submitted as part requirement for the degree of Computer Science at the University of Sussex. It is the product of my own labour except where indicated in the text. The report may be freely copied and distributed provided the source is acknowledged.
 \newpage
 
-\section{Summary}
+\section*{Summary}
 
 
 \newpage
@@ -62,7 +62,7 @@ The system will be scalable and allow a large number of nodes to communicate eff
 
 
 % explain the structure of the report.
-This report will cover professional and ethical considerations, related research and systems, more detailed technical requirements, and a record of phases which have been completed and those still to be completed.
+This report will cover professional and ethical considerations, related research and systems, more detailed technical requirements, details of the design and implementation of the system and evaluation of its functionality and performance,
 
 \subsection{Professional Considerations}
 The BCS Code of Conduct \cite{bcscoc} sets out the following standards which may be relevant to this project: 2 c) “develop your professional knowledge, skills and competence on a continuing basis, maintaining awareness of technological developments, procedures, and standards that are relevant to your field.” and 2 d) “ensure that you have the knowledge and understanding of Legislation* and that you comply with such Legislation, in carrying out your professional responsibilities.”
@@ -98,6 +98,12 @@ The stabilisation that chord nodes run periodically is important to keep the net
 Memcached uses spare memory on web servers to create a distributed in-memory cache which can be used to alleviate server load. This provides several benefits when compared to having each server managing it's own individual cache: the combined cache is much larger than individual caches; cached data is consistent any server requesting the a key in the cache will get the same value, whereas separate caches may not update data at the same time; improved scalability, as more servers are added to handle increasing load the size of the cache increases, making large scaling much easier than it would be with individual caches per server.
 \\
 \\
+% pastry, tapestry, bamboo etc.
+
+
+
+\\
+\\
 \paragraph{Mace} \cite{mace} is a toolkit for building distributed systems which “seeks to transform the way distributed systems are built by providing designers with a simple method for writing complex but correct and efficient implementations of distributed systems.” \cite{mace_quote} It is designed to provide a common 'language' to design distributed systems without having to implement the entire system from scratch, it provides and uses libraries to build systems. The restrictions mace imposes in this way allow for better options for debugging a distributed system.
 
 Mace consists of it's own domain-specific C++ language extension to allow users to implement node functionality, a set of libraries which implement the functionality necessary to create and maintain distributed systems as well as common features for such systems. This allows its users to concentrate on the system being distributed and spend less time on the implementation of the distribution itself.
@@ -106,6 +112,10 @@ Nodes in mace are made up of one or more layers and each layer is built on an ev
 \\
 \\
 \paragraph{Libevent} \cite{libevent} is a cross platform C library which provides a single API for implementing event driven network servers using one of a number of mechanisms systems provide for event notification, to allow for asynchronous I/O operations. Libevent checks for events and runs the callbacks specified for each event in the queue. An event can be a notification for a socket becoming read- or write-able, a new connection on a listen socket or a timer event among other things. Libevent also provides bufferevents to simplify the task of using read and write buffers with socket events. Libevent also includes a simple HTTP, DNS and RPC (remote procedure call) implementations.
+
+Libevent provides a single API for event notification which can use a range of underlying mechanisms provided by different operating systems (currently /dev/poll, kqueue(2), event ports, POSIX select(2), Windows select(), poll(2), and epoll(4)).
+
+Libevent is used in a range of widely used applications, systems and tools, including Memcached, the Chromium web browser, and the Transmission Bittorrent client, among many others.
 \\
 \\
 \paragraph{Boost.Asio} \cite{basio} is a cross platform C++ library, similar to libevent, providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
@@ -143,6 +153,8 @@ Provide callbacks for notifying the application of changes in the availability o
 Provide high performance network communication between nodes
 \item
 Be highly scalable both in terms of number of nodes and the load of individual nodes assuming the application is able to handle such loads.
+\item
+Ease of use.
 \end{itemize}
 
 \section{Design and Building}
@@ -150,16 +162,17 @@ Be highly scalable both in terms of number of nodes and the load of individual n
 \subsection{Design Process}
 
 The design involves multiple modules or layers
+required considering both the internal functionality and the interface provided to users of the finished library.
 
 \subsection{Design Principals}
-Several design principals were
+Several design principals were employed to help reduce the chance of unhandled errors occurring and to simplify the task of building a complicated system.
 
 \subparagraph{No global state}
 This makes it easier to create thread-safe code and allow multiple instances to be instantiated within a single process. It allows for a more functional approach wherein all state has to be passed to functions as a arguments, this will mean that they can be implemented so to, as far as possible, always behave consistently way when given the same input.
 
 \subparagraph{Layered structure}
-Organising a large amount of code can be
 The code will be organised into separate layers which utilise the layers below them but do not assume knowledge of layers above. this minimises interdependencies between modules.
+This allows easier management of the project and means each component can be understood on its own, thus simplifying the task of building them.
 
 \subparagraph{Defensive programming}
 Errors in software are inevitable, however they can be reduced and managed with some thought. For example by checking all function input and checking function return codes to catch errors before they cause further problems, allowing
@@ -167,18 +180,16 @@ Errors in software are inevitable, however they can be reduced and managed with 
 \subsection{Design Details}
 
 \paragraph{Overlay network}
-To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is somewhat based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter or 'name'. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own. Figure \ref{fig:rtovmap} shows how nodes in a real network map into the virtual network.
+To facilitate the self-organisation of nodes and communication between them, a virtual 'overlay' network is created. It's design is based on the Chord protocol as referenced earlier. Each node on the network is assigned an identifier in the form of a hash of a user supplied parameter or 'name'. The overlay network itself takes the form af a virtual ring of nodes ordered by their identifiers, in which each node is aware the real location (i.e. IP address and port number) of and can communicate with one or more nodes with identifiers proceeding it's own. Figure \ref{fig:rtovmap} shows how nodes in a real network map into the virtual network.
 \\
 To maintain the network, each node is aware of several other nodes, specifically their immediate successor and predecessor, as well as several nodes in the finger table for improved lookup performance.
+
 \subparagraph{Routing} The main functionality of the network is mapping identifiers to nodes, because at minimum each node knows about its immediate successor, this is be achieved by checking if the ID is between that of the current node and that of its successor, if it is then the ID maps to the successor, otherwise the successor is asked to find the node which the ID maps to. 
 This works correctly, however in the worst case it requires querying every node in the system in turn to find the mapping. 
 An improvement to this system is for each node to keep a cache of several nodes succeeding it, this is called the \textit{finger table} and consists of a list of nodes after the current at progressively larger intervals.
 Specifically it contains \textit{m} entries where \textit{m} is the number of bits in identifiers. Entry \textit{k} refers to the node that is the successor of $(n + 2^k) mod 2^m$ where \textit{n} is the identifier of the current node.
 The \textit{finger table} is used for mapping by asking the last node in the finger table with an ID lower than the one being mapped rather than just the successor.
 Figure \ref{fig:fingersRbttr} shows the improvement using a finger table can make for lookup.
-
-
-% wwrite about stabilisation
 
 \begin{figure}
 \centering
@@ -196,6 +207,17 @@ Figure \ref{fig:fingersRbttr} shows the improvement using a finger table can mak
 \caption{Use of a finger table improves lookup performance by reducing the number of hops to find the node an ID maps to.}
 \label{fig:fingersRbttr}
 \end{figure}
+
+
+\subparagraph{Stabilisation} There are several things which need to be done in order to maintain the network as nodes may join or leave at any time. The first stage is to check the availability of the nodes successor as this is the main point of contact with the network, for this reason each node keeps a list of several successor nodes for use in the event that the immediate successor becomes unavailable.
+\\
+The stabilisation process consists of several stages, firstly a node checks that the successor nodes are available and removes any which aren't.
+Next the node verifies it is in the right place on the network by asking it's recorded successor for it's predecessor. This will either be itself, a new node that has joined the system or none in the case that it's original immediate successor has become unavailable. The node is now aware of its successor, either it hasn't changed or it has the been given a new one. The next step is to 'notify' the successor so that it is aware of its predecessor for use in future stabilisations.
+Nodes also periodically check the availability of their predecessors.
+\\
+The last stage is updating the finger table, which is simply a matter of asking the successor to find the successor of several pre-determined identifiers as defined in the routing description.
+
+
 
 \paragraph{The Network layer}
 The network layer handles open connections as well as the listen socket. It mostly acts as a wrapper for libevent and provides a simplified interface for the layers above. The main data structure is \texttt{struct net\_server} which is an instance of the net layer which needs to be passed to the majority of functions. It holds references to an event base (libevent's main data structure); open connections; and the listen socket. The layer contains functions for creating, activating and configuring connections.
@@ -263,6 +285,7 @@ Most interaction with the library is with the node layer, though some interactio
 The first stage is initialising a node with a listen port and a unique name used for the nodes identifier by calling \texttt{node\_create}. This allocates all necessary data structures and sets up the network layer.
 Next calling \texttt{node\_network\_create} or \texttt{node\_network\_join} providing a callback for when the network has been successfully joined and, in the latter case, the address of an existing node in the network.
 This starts the event loop and as such does not return until the node is shut down, This is why the callback is necessary, the application should utilise it to start one or more threads for its functionality.
+When a node receives a message for the application, a users specified callback is called with the message, the application should use this to pass the relevant information to its processing thread(s) to prevent blocking of other network activity.
 Figure \ref{fig:startlib} shows an overview of the process of setting up and running a node, and figure \ref{fig:runlib} shows the main interactions that an application will have with the library as well as the major internal interactions
 
 \begin{figure}
@@ -293,22 +316,27 @@ This is a simple command line application to demonstrate basic functionality. It
 
 \section{Testing}
 
-\subsection{Unit testing}
+Much of the code in this project is difficult to test because of the fact that much of it depends on network communication and having the system running, for that reason most testing was done by setting up a small network of nodes running a simple application.
 
 \subsection{Simulated real world testing}
 
 \section{Evaluation}
 
-\subsection{Future work}
 
-There are several enhancements I would like to make beyond the current relatively simple functionality
-
-%  Configurability
-%  Security
 
 \section{Conclusion}
 
+have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication
 
+% evaluation summary
+
+\subsection{Future work}
+
+There are several enhancements I would like to make beyond the current relatively simple functionality,
+%  Configurability
+
+%  Security
+\paragraph{Security} I would like to implement SSL based connections between nodes to allow for secure communication and to allow for verification of message origin
 
 \section{References}
 
@@ -332,7 +360,6 @@ Messages are made up of a single bit defining the type of the message; a 4 byte 
 \texttt{'P'} & Ask a node for its predecessor \\\hline
 \texttt{'p'} & Returning a node's predecessor \\\hline
 \texttt{'N'} & Notify another node that the sender believes it is that node's predecessor \\\hline
-\texttt{'n'} & Reply acknowledging predecessor notification \\\hline
 \texttt{'A'} & Used to check the availability of a node\\\hline
 \texttt{'a'} & Reply to confirm that a node is operating \\\hline
 \texttt{'M'} & The contents of the message is for the application using the library \\\hline
@@ -340,7 +367,17 @@ Messages are made up of a single bit defining the type of the message; a 4 byte 
 \end{tabular}
 
 \subsection{Body Layouts}
-
+\begin{tabular}{|l | l | l|}
+\hline
+\texttt{'S'} & ID & The ID to find the successor of\\\hline
+\texttt{'s'} & 'Y' ID IP port & the char 'Y' to indicate success followed by the i.d. i.p. and port of the node found\\\hline
+\texttt{'P'} & N/A & no body necessary\\\hline
+\texttt{'p'} & 'Y' ID IP port & the char 'Y' to indicate success followed by the i.d. i.p. and port of the node's predecessor \\\hline
+\texttt{'N'} & ID port & the i.d. and listen port of the node dong the notifying (i.p. address obtained from connection) \\\hline
+\texttt{'A'} & N/A & no body necessary\\\hline
+\texttt{'a'} & Y & simple confirmation message\\\hline
+\texttt{'M'} & N/A & Application dependant\\\hline
+\end{tabular}
 
 
 
