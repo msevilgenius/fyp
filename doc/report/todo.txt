@@ -1,7 +1,6 @@
 todo:
 — You should also include a good amount of text on other DHT approaches,  such as Pastry, Tapestry, Bamboo etc. A discussion on systems that use/are based on DHTs is also required. Memcached is a good start.
 — The discussion on Boost.Asio should be extended.
-— You could also describe how you would implement other applications (e.g. pub/sub, storage, group communication etc.) in details even though you haven’t actually written the code.
 
 — talk about hops testing method
 
@@ -9,7 +8,8 @@ todo:
 — CONCLUSION
 — SUMMARY
 
-
+1/2 done:
+— You could also describe how you would implement other applications (e.g. pub/sub, storage, group communication etc.) in details even though you haven’t actually written the code.
 
 done:
 — Introduction: when you say 'and those still to be completed’, it seems that the report will present half-baked work. I would instead prefer an expression that talks about ‘future work’.
