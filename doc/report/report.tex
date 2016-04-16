@@ -393,6 +393,22 @@ Once the minimal required functionality had been implemented, I was able to test
 
 \section{Evaluation}
 
+% from f requrements
+% create & join
+% routing (finding node)
+% stabilisation and notif
+% msg callbacks
+% notify network changes
+
+% from nf req
+% high performance net
+% scalable
+% ease of use
+Ease of use can be difficult to evaluate, however the \texttt{textsend} application gives an indication that the library provides an easy to use interface
+
+% routing perf
+As for performance, there are several aspects to consider, firstly the performance of lookup and routing can 
+
 Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier
 
 \begin{figure}
@@ -404,13 +420,14 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 \label{fig:fingerperf}
 \end{figure}
 
+% stability
+
 
 
 \section{Conclusion}
 
-have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
+Overall I would say that I have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
 
-Ease of use can be difficult to evaluate, however the \texttt{textsend} application gives an indication that the library provides an easy to use interface
 % evaluation summary
 
 \subsection{Future work}
