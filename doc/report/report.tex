@@ -72,14 +72,14 @@ This report is submitted as part requirement for the degree of Computer Science 
 \section{Introduction}
 
 %this should give the motivation for the project. The aims of the project should at least be stated in the first paragraph, but preferably in the first sentence.
-This project aims to create a system which  enables the building of distributed computing applications.
+This project aims to create a system which enables the building of distributed computing applications, based on distributed hash table (DHT) lookup and routing.
 %this sentence is awful
 By implementing a consistent means of organising computing nodes and enabling communication between them without each node's applications needing knowledge of the other nodes in the system.
 The system will be scalable and allow a large number of nodes to communicate efficiently.
 
 
 % explain the structure of the report.
-This report will cover professional and ethical considerations, related research and systems, more detailed technical requirements, details of the design and implementation of the system and evaluation of its functionality and performance,
+This report will cover professional and ethical considerations; related research and existing similar distributed systems, as well as asynchronous I/O implementations; more detailed technical requirements; details of the design and implementation of the system; and evaluation of its functionality and performance.
 
 
 \subsection{Professional Considerations}
@@ -95,6 +95,8 @@ Existing libraries may be used in this project and their licenses must be follow
 
 \section{Background Reading/Existing solutions}
 \subsection{Distributed and DHT based systems}
+
+\paragraph{Distributed Hash Tables}
 
 \paragraph{The chord protocol} \cite{chord} uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
 Nodes are mapped into the same keyspace used for identifiers for the application.
@@ -119,6 +121,9 @@ Figure \ref{fig:chord_join_stab} shows the stabilisation process after a new nod
 There is an more extensive discussion of the chord protocol, along with my specific implementation in the design section.
 \\
 \\
+\paragraph{Pastry} \cite{pastry}
+
+
 \paragraph{Memcached} \cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
 
 Memcached uses spare memory on web servers to create a distributed in-memory cache which can be used to alleviate server load. This provides several benefits when compared to having each server managing it's own individual cache: the combined cache is much larger than individual caches; cached data is consistent any server requesting the a key in the cache will get the same value, whereas separate caches may not update data at the same time; improved scalability, as more servers are added to handle increasing load the size of the cache increases, making large scaling much easier than it would be with individual caches per server.
@@ -350,7 +355,16 @@ This is a simple command line application to demonstrate basic functionality. It
 
 There are a few other applications which could be implemented as follows
 
-\paragraph{2. Publish subscribe system}
+\paragraph{2. Publish subscribe system} A publish-subscribe system allows data producers (publishers) send messages to receivers (subscribers) without either necessarily knowing about the existence of the other. Specifically publishers output data with a specific label or topic into some intermediary system which then forwards the data to subscribers to that topic.
+To implement such a system using the library, the application would map topics to IDs using the topic name and then the successor node of that ID would be responsible for that topic. Nodes could subscribe to a topic by sending a \textit{subscribe} message to the node responsible for it, which would then add that node to its list of subscribers. Publishers would publish to topics in the same way, sending a \textit{publish} message to the node responsible for the topic, which then sends the message on to all registered subscribers to the topic.
+% subscribe to topic
+% publish to topic
+% topic -> id => node n
+% so node n is responsible for topic
+% subscriber message n with 'subscribe'
+% n keeps a list of subscribers to topics it is responsible for
+% publishers send data for topic to n
+% n sends data from publishers to all subscribers
 
 
 \paragraph{3. Distributed storage}
