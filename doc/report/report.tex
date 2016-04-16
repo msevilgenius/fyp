@@ -124,8 +124,9 @@ There is an more extensive discussion of the chord protocol, along with my speci
 \\
 % pastry, tapestry, bamboo etc.
 \subsubsection{Pastry}
-Pastry \cite{pastry} is an implementation of a scalable, decentralised peer-to-peer routing system. 
-
+Pastry \cite{pastry} is an implementation of a scalable, decentralised, self organising peer-to-peer routing system. Pastry assigns random 128 identifiers to nodes and routes messages by sending them to a node with a longer matching key prefix than the current node or to a node with a matching key prefix of the same length but with a closer value if none are known.
+To facilitate this a node's routing table contains several rows which have entries referring to nodes, where nodes in row \textit{n} share an \textit{n-digit} key prefix with the current node.
+Pastry nodes also has a \textit{leaf set}, a list of the nodes in the network with the numericaly closest identifiers, and a \textit{neighbourhood set} containing references to the nearest nodes according to a proximity metric (e.g. IP routing hops or geographical distance).
 
 \subsubsection{Memcached} 
 Memcached\cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
