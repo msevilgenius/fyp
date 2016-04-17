@@ -138,6 +138,10 @@ When a node cannot be contacted by its immediate neighbours it is considered fai
 \subsubsection{Tapestry}
 Tapestry \cite{tapestry} is another DHT based scalable, self organising infrastructure that efficiently routes requests to content with emphasis on fault tolerance and robustness with regards to heavy load and node and network faults through redundancy.
 Similar to pastry, tapestry nodes have a \textit{neighbour map} which takes the form of a table, storing lists of the closest network nodes with matching identifier suffixes of increasing length. Nodes also store a list of nodes which refer to them in their own neighbour maps.
+To provide better fault tolerance, where tapestry stores multiple copies of data nodes en route store the location of all copies, and allows applications which wish to retrieve such a copy to define a selection operator to choose which copy to retrieve.
+
+When a node failure is detected, through TCP timeouts while routing or using heartbeat packets, the failed node is marked as invalid, and an alternative node is used to route messages. Marking a failed node as invalid instead of simply removing it from the routing table allows it to be re-enabled in the event that it was only temporarily unavailable.
+Redundancy is implemented by appending a sequence of 'salt' values to object IDs so that they can be mapped to several different nodes after hashing.
 
 \subsubsection{Memcached} 
 Memcached\cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
@@ -166,8 +170,12 @@ Libevent provides a single API for event notification which can use a range of u
 Libevent is used in a range of widely used applications, systems and tools, including Memcached, the Chromium web browser, and the Transmission Bittorrent client, among many others.
 \\
 %using libevent
-Using Libevent involves setting up an \texttt{event\_base}, adding one or more events to it and running the event loop. Events can be setup to be triggered by a number of conditions: a file descriptor being ready to read from and/or write to; a timeout expiration; a signal occurring; or manual triggering. Internally Libevent's event loop checks for triggered events and marks them active, then runs the user set callbacks for all active events which have the highest priority and then moves to the next iteration.
+Using Libevent involves setting up an \texttt{event\_base}, adding one or more events to it and running the event loop. Events can be setup to be triggered by a number of conditions: a file descriptor being ready to read from and/or write to; a timeout expiration; a signal occurring; or manual triggering.
+
+Internally Libevent's event loop checks for triggered events and marks them active, then runs the user set callbacks for all active events which have the highest priority and then moves to the next iteration.
+
 Also provided are buffer events which use internal callbacks to read from the events file descriptor into a buffer and write from another buffer to the file descriptor when the file descriptor is ready and then call user set callbacks when the buffers are above or below user set watermarks.
+The Libevent book\cite{libevent_book} provides a detailed overview and examples of the usage of much of libevent's functionality.
 \\
 \\
 
@@ -365,16 +373,17 @@ Figure \ref{fig:startlib} shows an overview of the process of setting up and run
 
 \subsection{Example applications}
 
-\paragraph{1. textsend}
+\paragraph{A. Textsend}
 
 This is a simple command line application to demonstrate basic functionality. It will join an existing network if given the address of a node, or create a new one. Once in a network this application takes text input from \texttt{stdin} and sends it to the node it maps to. Upon receiving a message from a node it is printed to \texttt{stdout}
 \\
 \\
 %pub/sub, storage, group communication etc implementation expectations
 
+\noindent
 There are a few other applications which could be implemented as follows
 
-\paragraph{2. Publish subscribe system} A publish-subscribe system allows data producers (publishers) send messages to receivers (subscribers) without either necessarily knowing about the existence of the other. Specifically publishers output data with a specific label or topic into some intermediary system which then forwards the data to subscribers to that topic.
+\paragraph{B. Publish subscribe system} A publish-subscribe system allows data producers (publishers) send messages to receivers (subscribers) without either necessarily knowing about the existence of the other. Specifically publishers output data with a specific label or topic into some intermediary system which then forwards the data to subscribers to that topic.
 To implement such a system using the library, the application would map topics to IDs using the topic name and then the successor node of that ID would be responsible for that topic. Nodes could subscribe to a topic by sending a \textit{subscribe} message to the node responsible for it, which would then add that node to its list of subscribers. Publishers would publish to topics in the same way, sending a \textit{publish} message to the node responsible for the topic, which then sends the message on to all registered subscribers to the topic.
 % subscribe to topic
 % publish to topic
@@ -386,7 +395,7 @@ To implement such a system using the library, the application would map topics t
 % n sends data from publishers to all subscribers
 
 
-\paragraph{3. Distributed storage}
+\paragraph{C. Distributed storage} An implementation of a basic distributed storage system could be achieved by mapping files to nodes using hashes of their filenames and sending \textit{store} messages containing the filename and content to the relevant node, and \textit{retrieve} messages with the name of the file requested, the node receiving such messages would store or retrieve the correct file as necessary. This simple approach lacks redundancy, which could be added by adding a series of 'salt' values to filenames and hashing the results allowing mapping of a single file to multiple nodes like tapestry. It may also be necessary to occasionally 're-store' files periodically if the node set has changed.
 
 
 \section{Testing}
@@ -459,6 +468,9 @@ Additionally, allowing use of domain names for addressing nodes in addition to S
 
 % network info
 \paragraph{Network monitoring} Currently, there is no means of monitoring the state of the network as a whole, other than using the debugging info from each individual node. It should be relatively simple to add more types of message for gathering information about the network, for instance the number of nodes could be determined by a message sent around the entire ring from each node to its successor until it arrived at the node which originated the message.
+
+
+\paragraph{Other} It should also be possible to implement the ability to automatically find and join a sufficiently large network using an algorithm such as 'expanding ring'.
 
 \section{References}
 
