@@ -96,7 +96,8 @@ Existing libraries may be used in this project and their licenses must be follow
 Distributed Hash Tables (DHTs) are a method of distributing data or workloads evenly among a number of systems. As the name suggests they function like hash tables or hash maps, where data is mapped to \textit{buckets} (separate computing nodes in a DHT) by hashing a \textit{key} and using the hash to assign a bucket. In DHTs each node is given ownership of a section of the keyspace, with an \textit{overlay network} connecting the nodes to each other to allow them to find the owner of a particular key.
 
 DHT specifically refers to a storage and retrieval system, though the concept can be used and adapted for much more general purposes such as dividing computational work between many systems.
-
+\\
+\\
 \subsubsection{The chord protocol} 
 Chord \cite{chord} uses consistent hashing to assign keys to nodes. It defines a set of functions which nodes use to build and maintain a chord network. Chord nodes in a network form a virtual ring in which each node is aware of its immediately adjacent nodes as well as several succeeding nodes.
 Nodes are mapped into the same keyspace used for identifiers for the application.
@@ -132,6 +133,11 @@ Pastry favours routing through nodes close to the current one, and so routes cho
 Pastry nodes join the system by sending a join message to a nearby node, this message is routed to the node with closest numerical ID to the new node, all nodes that the join request is routed through send their state tables to the new node which uses this information to begin to populate its own state set and request more information from other nodes where necessary to complete it. Once this is done, the new node sends a copy of its state table to all nodes referenced in it which then update their state as necessary. The new node is now part of the network and messages can be routed to and through it.
 
 When a node cannot be contacted by its immediate neighbours it is considered failed, to deal with such failures, nodes which had the failed node in their leaf sets get the leaf set of the node in the leaf set furthest from the current on the side of the failed node and uses the information to maintain its leaf set. If a node in a nodes routing table has failed, it will be detected when no reply is received from an attempt to route through it, when this happens the node can routes the message through another node instead, then it asks another node in the same row for an entry to replace the failed node.
+\\
+\\
+\subsubsection{Tapestry}
+Tapestry \cite{tapestry} is another DHT based scalable, self organising infrastructure that efficiently routes requests to content with emphasis on fault tolerance and robustness with regards to heavy load and node and network faults through redundancy.
+Similar to pastry, tapestry nodes have a \textit{neighbour map} which takes the form of a table, storing lists of the closest network nodes with matching identifier suffixes of increasing length. Nodes also store a list of nodes which refer to them in their own neighbour maps.
 
 \subsubsection{Memcached} 
 Memcached\cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
@@ -166,8 +172,8 @@ Also provided are buffer events which use internal callbacks to read from the ev
 \\
 
 \subsubsection{Boost.Asio}
-Boost.Asio\cite{basio} is a cross platform C++ library, similar to libevent, providing a consistent API for network and low level I/O programming with an asynchronous model. Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
-
+Boost.Asio\cite{basio} is a cross platform modern C++ library, similar to libevent, providing a consistent API for network and low level I/O programming with an asynchronous model, supporting IPv4 and IPv6, TCP and UDP, and SSL. It allows use of both synchronous and asynchronous strategies and provides interfaces compatible with std::iostream for ease of use.
+Its scope is slightly narrower than libevent's, so it doesn't include the simple protocol implementations.
 
 
 
@@ -389,7 +395,9 @@ Much of the code in this project is difficult to test because of the fact that m
 
 \subsection{Simulated real world testing}
 
-Once the minimal required functionality had been implemented, I was able to test the functionality using a simple application with minimal functionality.
+Once the minimal required functionality had been implemented, I was able to test the functionality of the library using a simple application with minimal functionality, specifically I used the textsend application to test that nodes were able to join and that the network stabilized itself and routed messages correctly. Starting with a single instance routing messages to itself and gradually adding nodes Using a combination of debug logging and GDB, I was able to diagnose and fix major errors and bugs in the system.
+
+Once basic functionality was working, I was able to begin testing the system with larger numbers of nodes. To test that the network correctly stabilised and routed messages, I used instances of textsend to send the route same message from all nodes and check that they all arrived at the same node. After adding the ability to count the number of hops required to find the correct node to route a message to this same method was used to test routing performance, results shown in fig. \ref{fig:fingerperf}.
 
 \section{Evaluation}
 
@@ -400,14 +408,21 @@ Once the minimal required functionality had been implemented, I was able to test
 % msg callbacks
 % notify network changes
 
+Simulated 'real world' testing has shown that applications using the library can create and join networks, and that they are able to route messages correctly
+
+I was not able to fully implement the ability to notify the application of changes to the keyset it is responsible for, however this is not core functionality and not necessary for a working system.
+
 % from nf req
 % high performance net
 % scalable
 % ease of use
 Ease of use can be difficult to evaluate, however the \texttt{textsend} application gives an indication that the library provides an easy to use interface
 
+The use of asynchronous I/O allows applications using the library to effectively utilise the resources they have available
+
+
 % routing perf
-As for performance, there are several aspects to consider, firstly the performance of lookup and routing can 
+As for performance, there are several aspects to consider, firstly, network communication, the performance of lookup and routing can 
 
 Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier
 
@@ -416,7 +431,7 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 \makebox[\columnwidth][c]{\includegraphics[width=1.2\columnwidth]{finger_performance.png}}
 \end{center}
 %\includegraphics{finger_performance.png}
-\caption{Graph showing average hops (nodes which need to be asked) to find the successor of an I.D.}
+\caption{Graph showing average hops (nodes which need to be asked) to find the successor of an I.D. with and without the finger table}
 \label{fig:fingerperf}
 \end{figure}
 
@@ -427,6 +442,8 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 \section{Conclusion}
 
 Overall I would say that I have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
+
+In hindsight, being able to have set up additional, possibly automated testing such as unit tests may have improved my ability to find and diagnose some errors in the library
 
 % evaluation summary
 
