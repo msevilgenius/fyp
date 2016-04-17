@@ -162,6 +162,9 @@ Nodes in mace are made up of one or more layers and each layer is built on an ev
 
 \subsection{Asyncronous I/O}
 
+The most simple I/O calls are synchronous and therefore blocking, that is to say that when a function is called (e.g. read from a socket) it does not return until the operation has completed or encounters an error. This makes handling multiple operations concurrently without a separate thread for each which causes a large amount of overhead when scaling an application which uses such a system. Asynchronous I/O allows an application to initiate I/O operations and continue with other tasks such as handling completed operations while waiting for them to complete. Most operating systems provide an method for implementing Asynchronous I/O calls, although their functionality and differ somewhat, fortunately libraries which provide a consistent interface across multiple platforms exist to simplify their usage.
+
+
 \subsubsection{Libevent}
 Libevent\cite{libevent} is a cross platform C library which provides a single API for implementing event driven network servers using one of a number of mechanisms systems provide for event notification, to allow for asynchronous I/O operations. Libevent checks for events and runs the callbacks specified for each event in the queue. An event can be a notification for a socket becoming read- or write-able, a new connection on a listen socket or a timer event among other things. Libevent also provides bufferevents to simplify the task of using read and write buffers with socket events. Libevent also includes a simple HTTP, DNS and RPC (remote procedure call) implementations.
 
