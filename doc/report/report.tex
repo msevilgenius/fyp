@@ -212,7 +212,7 @@ Once the node a key maps to has been found allow data to be sent to that node.
 Provide callbacks for the application when a message is received.
 Allow the application programmer to provide functions which are called when specific events occur.
 \item
-Provide callbacks for notifying the application of changes in the availability of nodes that may affect it, i.e. the next and previous nodes. Specifically when the set of keys a node is responsible for changes.
+Provide callbacks for notifying the application of changes in the availability of nodes that may affect it, i.e. the next and previous nodes. Specifically when the set of keys a node is responsible for changes. (Desirable but not necessary)
 \end{itemize}
 
 
@@ -431,6 +431,8 @@ Once the minimal required functionality had been implemented, I was able to test
 
 Once basic functionality was working, I was able to begin testing the system with larger numbers of nodes. To test that the network correctly stabilised and routed messages, I used instances of textsend to send the route same message from all nodes and check that they all arrived at the same node. After adding the ability to count the number of hops required to find the correct node to route a message to this same method was used to test routing performance, results shown in fig. \ref{fig:fingerperf}.
 
+Another aspect of the system tested in this way was failure tolerance. By setting up a network then manually terminating instances and retesting the routing of messages, I was able to verify that the network can manage failures and repair its routing infrastructure.
+
 \section{Evaluation}
 
 % from f requrements
@@ -440,9 +442,13 @@ Once basic functionality was working, I was able to begin testing the system wit
 % msg callbacks
 % notify network changes
 
-Simulated 'real world' testing has shown that applications using the library can create and join networks, and that they are able to route messages correctly
+The library I have produced for this project succeeds in meeting the functional requirements set out, I have been able to use it to build an application to demonstrate its functionality. Testing has shown that nodes are able to create and join networks and self-organise to allow for message routing. 
+The system is able to accommodate additional nodes joining a network. To demonstrate this, I added an additional 32 nodes to an existing network simultaneously. After a small amount of time had passed, I tested message routing and all nodes routed messages correctly.
+
+The network created by the library is generally robust and able to handle individual node failures without detriment except in a few specific (and unlikely) situations i.e. several nodes adjacent in the keyspace failing simultaneously, such that all nodes in a nodes successor list become unavailable between stabilisations which is unlikely due to the nature of identifier hashes meaning that adjacent nodes are higly likely to be divers in terms of geography etc.; or the successor of a new node failing as it joins in which case the network as a whole would remain functional but the new node would fail to join.
 
 I was not able to fully implement the ability to notify the application of changes to the keyset it is responsible for, however this is not core functionality and not necessary for a working system.
+
 
 % from nf req
 % high performance net
@@ -456,6 +462,8 @@ The use of asynchronous I/O allows applications using the library to effectively
 % routing perf
 As for performance, there are several aspects to consider, firstly, network communication, the performance of lookup and routing can 
 
+I was able to run over one hundred instances of textsend on a single relatively low-end machine with ease
+Routing performance
 Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier
 
 \begin{figure}
@@ -475,7 +483,7 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 
 Overall I would say that I have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
 
-In hindsight, being able to have set up additional, possibly automated testing such as unit tests may have improved my ability to find and diagnose some errors in the library
+In hindsight, being able to have set up additional, possibly automated testing such as unit tests may have improved my ability to find and diagnose some errors in the library.
 
 % evaluation summary
 
@@ -485,7 +493,7 @@ There are several enhancements I would like to make beyond the current functiona
 %  Configurability
 \paragraph{Configurability and tuning} Allowing configuration and tuning of parameters such as the stabilisation interval could help improve performance and stability of the network, depending on the use case, for instance one system may expect the availability of nodes to remain fairly constant so heigh frequency stabilisation may be unnecessary, while another may expect a high rate of \textit{churn} (nodes joining and leaving frequently) and so would need much more frequent stabilisation.
 
-%  Security
+% Security
 \paragraph{Security} I would like to implement SSL based connections between nodes to allow for secure communication and verification of message origin.
 Additionally, allowing use of domain names for addressing nodes in addition to SSL would allow for implementation of a system which only allows specific nodes to join the system.
 
