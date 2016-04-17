@@ -160,9 +160,13 @@ Nodes in mace are made up of one or more layers and each layer is built on an ev
 \\
 \\
 
-\subsection{Asyncronous I/O}
+\subsection{Asynchronous I/O}
 
-The most simple I/O calls are synchronous and therefore blocking, that is to say that when a function is called (e.g. read from a socket) it does not return until the operation has completed or encounters an error. This makes handling multiple operations concurrently without a separate thread for each which causes a large amount of overhead when scaling an application which uses such a system. Asynchronous I/O allows an application to initiate I/O operations and continue with other tasks such as handling completed operations while waiting for them to complete. Most operating systems provide an method for implementing Asynchronous I/O calls, although their functionality and differ somewhat, fortunately libraries which provide a consistent interface across multiple platforms exist to simplify their usage.
+The most simple I/O calls are synchronous and therefore blocking, that is to say that when a function is called (e.g. read from a socket) it does not return until the operation has completed or encounters an error. This makes handling multiple operations concurrently without a separate thread for each which causes a large amount of overhead when scaling an application which uses such a system.
+
+Asynchronous I/O allows an application to initiate I/O operations and continue with other tasks such as handling completed operations while waiting for them to complete. This system is much more scalable, allowing for instance a server to handle thousands of requests with as little overhead as possible. It can also be combined with threads to handle non-I/O based workloads.
+
+Most operating systems provide an method for implementing Asynchronous I/O calls, although their functionality and differ somewhat, fortunately libraries which provide a consistent interface across multiple platforms exist to simplify their usage.
 
 
 \subsubsection{Libevent}
@@ -319,22 +323,37 @@ Then the user can call \texttt{node\_network\_join} with the address of an exist
 A node instance contains a reference to its own net server instance.
 The node layer can be split into a few sub modules: Handling incoming messages from other nodes; network maintenance; message routing; initiating communications with other nodes
 \\
+
+\noindent
 Routing: the most important functions are \texttt{node\_find\_successor} and \\\texttt{node\_find\_successor\_remote} as they are used directly and indirectly by most other functions. These functions map IDs to nodes by checking if the current node or it's successor is the successor of the given ID and if not asking another node the same thing until the successor is found.
 \\
-Stabilisation and network maintenance: There are three groups of functions which are run periodically, they are: stabilise, which involves ordering nodes correctly in the overlay network; fix fingers, which ensures the node's finger table is up to date; and periodic checks of the availability of neighbouring nodes.
+
+\noindent
+Stabilisation and network maintenance: There are four groups of functions which are run periodically, they are: stabilise, which involves ordering nodes correctly in the overlay network; fix fingers, which ensures the node's finger table is up to date; update successors which is similar to fix fingers but updates the successor list; and periodic checks of the availability of neighbouring nodes.
+
 % this is poorly worded
-The stabilise function updates the node's successor if necessary, by asking the node currently recorded as the successor for it's predecessor, and then notifies the updated successor that the current node is it's predecessor.
+The stabilise function updates the node's primary successor if necessary, by asking the node currently recorded as the successor for it's predecessor, and then notifies the updated successor that the current node is it's predecessor.
+
 The fix fingers function iterates through the positions in the finger table and finds the relevant node, again using \texttt{node\_find\_successor}, and updates the table.
-Periodically The availability of the node's predecessor is checked by sending it a message.
+
+The update successors function asks the node's primary successor for its successor and updates the second successor if necessary, then asks that node for its successor and so on until the successor list is fully populated.
+
+Periodically The availability of the node's predecessor and successors are checked by sending them a message.
 \\
+
+\noindent
 Incoming handling: When the network layer notifies the node layer that an incoming connection, the node layer sets up the callbacks for the connection. Once the header of the incoming message has been received, the type and content length are read and the relevant callbacks for each type of message are setup or called immediately if the content is already all in the connection's read buffer. There are functions for handling each type of incoming message.
-\\
+
+\noindent
 Utility functions: There are several utility functions used by several other functions which simplify their own code.
+
 %net interface
 \texttt{node\_send\_message} takes a \texttt{struct node\_msg} formats it and writes it to an open connection, the similarly named \texttt{node\_connect\_and\_send\_message} opens a new connection to the specified node and calls \texttt{node\_send\_message} with it.
+
 %hash id helpers
 \texttt{node\_id\_compare} takes two identifier hashes and returns 1, 0, or -1 to indicate that the first is greater than, equal to, or less than the second respectively.
 \texttt{node\_id\_in\_range} takes three ids identifier hashes and returns 'true' if the first falls between the second and third in the identifier space.
+
 The \texttt{get\_id} function takes a string and maps it to an identifier hash
 
 \paragraph{ID hashes}
@@ -351,6 +370,7 @@ Most interaction with the library is with the node layer, though some interactio
 The first stage is initialising a node with a listen port and a unique name used for the nodes identifier by calling \texttt{node\_create}. This allocates all necessary data structures and sets up the network layer.
 Next calling \texttt{node\_network\_create} or \texttt{node\_network\_join} providing a callback for when the network has been successfully joined and, in the latter case, the address of an existing node in the network.
 This starts the event loop and as such does not return until the node is shut down, This is why the callback is necessary, the application should utilise it to start one or more threads for its functionality.
+
 When a node receives a message for the application, a users specified callback is called with the message, the application should use this to pass the relevant information to its processing thread(s) to prevent blocking of other network activity.
 Figure \ref{fig:startlib} shows an overview of the process of setting up and running a node, and figure \ref{fig:runlib} shows the main interactions that an application will have with the library as well as the major internal interactions
 
