@@ -1,14 +1,16 @@
 todo:
-
+2nd half of eval
+conclusion eval summary
 — talk about hops testing method
 
-— EVALUATION
-— CONCLUSION
-— SUMMARY
+hops test data in appendix
 
 1/2 done:
 — You should also include a good amount of text on other DHT approaches,  such as Pastry, Tapestry, Bamboo etc. A discussion on systems that use/are based on DHTs is also required. Memcached is a good start.
 — The discussion on Boost.Asio should be extended.
+— EVALUATION
+— CONCLUSION
+— SUMMARY
 
 done:
 — You could also describe how you would implement other applications (e.g. pub/sub, storage, group communication etc.) in details even though you haven’t actually written the code.
