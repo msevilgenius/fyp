@@ -65,7 +65,7 @@ This report is submitted as part requirement for the degree of Computer Science 
 {
 Distributed systems are challenging to design and build, Distributed hash tables can be used to implement many types of distributed system. Specifically DHTs are decentralised, self-organising, and able to adapt to changes in the set of individuals that make up the system. High performance network communication is important for implementing such a system if it is to be highly scalable, and Asynchronous I/O provide a highly scalable means of handling I/O operations.
 
-The library produced provides a simple interface for building networks of large numbers of nodes and routing messages between them, the networks it builds are self organising and are resilient against failures of individual nodes in them. It uses Asynchronous I/O for network communication allowing for high scalability.
+The library produced provides a simple interface for building networks of large numbers of nodes and routing messages between them efficiently. The networks it builds are self organising and are resilient against failures of individual nodes in them. It uses consistent hashing for routing purposes and uses Asynchronous I/O for network communication allowing for high scalability.
 
 This report outlines the inspiration for, and design and implementation of my high-performance DHT based library for building decentralised, self-organising, peer-to-peer systems. It explores similar existing solutions and design ideas used; details of the design and implementation of the library and example applications using the library.
 
