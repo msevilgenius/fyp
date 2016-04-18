@@ -8,7 +8,7 @@
 \usepackage{tabularx}
 \usepackage{longtable}
 \usepackage{multicol}
-\usepackage[margin=3cm]{geometry}
+\usepackage[margin=4cm]{geometry}
 %\usepackage{import}
 \graphicspath{{fig/}}
 %\graphicspath{{F:/Documents/fyp/doc/report/fig/}}
@@ -63,7 +63,7 @@ This report is submitted as part requirement for the degree of Computer Science 
 \end{table}
 
 \newpage
-
+\newgeometry{margin=4.5cm}
 \section*{Summary}
 {
 Distributed systems are challenging to design and build, Distributed hash tables can be used to implement many types of distributed system. Specifically DHTs are decentralised, self-organising, and able to adapt to changes in the set of individuals that make up the system. High performance network communication is important for implementing such a system if it is to be highly scalable, and Asynchronous I/O provide a highly scalable means of handling I/O operations.
@@ -73,7 +73,7 @@ The library produced provides a simple interface for building networks of large 
 This report outlines the inspiration for, and design and implementation of my high-performance DHT based library for building decentralised, self-organising, peer-to-peer systems. It explores similar existing solutions and design ideas used; details of the design and implementation of the library and example applications using the library.
 
 }
-
+\restoregeometry
 \newpage
 \tableofcontents
 \newpage
@@ -196,8 +196,7 @@ Internally Libevent's event loop checks for triggered events and marks them acti
 
 Also provided are buffer events which use internal callbacks to read from the events file descriptor into a buffer and write from another buffer to the file descriptor when the file descriptor is ready and then call user set callbacks when the buffers are above or below user set watermarks.
 The Libevent book\cite{libevent_book} provides a detailed overview and examples of the usage of much of libevent's functionality.
-\\
-\\
+
 
 \subsubsection{Boost.Asio}
 Boost.Asio\cite{basio} is a cross platform modern C++ library, similar to libevent, providing a consistent API for network and low level I/O programming with an asynchronous model, supporting IPv4 and IPv6, TCP and UDP, and SSL. It allows use of both synchronous and asynchronous strategies and provides interfaces compatible with std::iostream for ease of use.
@@ -275,7 +274,7 @@ Figure \ref{fig:fingersRbttr} shows the improvement using a finger table can mak
 
 \begin{figure}
 \centering
-\def\svgwidth{\columnwidth}
+\def\svgwidth{0.85\columnwidth}
 \input{./fig/nodes_to_overlay_map.pdf_tex}
 \caption{Mapping of nodes on a real network (e.g. the internet) to a virtual overlay network. Each node is aware of at least the next node in the ring}
 \label{fig:rtovmap}
@@ -284,7 +283,7 @@ Figure \ref{fig:fingersRbttr} shows the improvement using a finger table can mak
 
 \begin{figure}
 \centering
-\def\svgwidth{0.95\columnwidth}
+\def\svgwidth{0.85\columnwidth}
 \input{./fig/finger_table_improvement.pdf_tex}
 \caption[caption]{Use of a finger table improves lookup performance by reducing the number of hops to find the node an ID maps to.
 Note: the finger table also contains the addresses of nodes, though they are omitted here for clarity}
@@ -442,7 +441,7 @@ Much of the code in this project is difficult to test because of the fact that m
 
 Once the minimal required functionality had been implemented, I was able to test the functionality of the library using a simple application with minimal functionality, specifically I used the textsend application to test that nodes were able to join and that the network stabilized itself and routed messages correctly. Starting with a single instance routing messages to itself and gradually adding nodes Using a combination of debug logging and GDB, I was able to diagnose and fix major errors and bugs in the system.
 
-Once basic functionality was working, I was able to begin testing the system with larger numbers of nodes, running over a hundred nodes on a relatively low end machine. To test that the network correctly stabilised and routed messages, I used instances of textsend to send the route same message from all nodes and check that they all arrived at the same node. After adding the ability to count the number of hops required to find the correct node to route a message to this same method was used to test routing performance, results shown in fig. \ref{fig:fingerperf}.
+Once basic functionality was working, I was able to begin testing the system with larger numbers of nodes. To test that the network correctly stabilised and routed messages, I used instances of textsend to send the route same message from all nodes and check that they all arrived at the same node. After adding the ability to count the number of hops required to find the correct node to route a message to this same method was used to test routing performance, results shown in fig. \ref{fig:fingerperf}.
 
 Another aspect of the system tested in this way was failure tolerance. By setting up a network then manually terminating several random instances and retesting the routing of messages, I was able to verify that the network can manage failures and repair its routing infrastructure.
 
@@ -458,26 +457,23 @@ Another aspect of the system tested in this way was failure tolerance. By settin
 The library I have produced for this project succeeds in meeting the functional requirements set out, I have been able to use it to build an application to demonstrate its functionality. Testing has shown that nodes are able to create and join networks and self-organise to allow for message routing. 
 The system is able to accommodate additional nodes joining a network. To demonstrate this, I added an additional 32 nodes to an existing network simultaneously. After a small amount of time had passed, I tested message routing and all nodes routed messages correctly.
 
-The network created by the library is generally robust and able to handle individual node failures without detriment except in a few specific (and unlikely) situations i.e. several nodes adjacent in the keyspace failing simultaneously, such that all nodes in a nodes successor list become unavailable between stabilisations which is unlikely due to the nature of identifier hashes meaning that adjacent nodes are higly likely to be divers in terms of geography etc.; or the successor of a new node failing as it joins in which case the network as a whole would remain functional but the new node would fail to join.
+The network created by the library is generally robust and able to handle individual node failures without detriment except in a few specific (and unlikely) situations i.e. several nodes adjacent in the keyspace failing simultaneously, such that all nodes in a nodes successor list become unavailable between stabilisations which is unlikely due to the nature of identifier hashes meaning that adjacent nodes are highly likely to be divers in terms of geography etc.; or the successor of a new node failing as it joins in which case the network as a whole would remain functional but the new node would fail to join.
 
-I was not able to fully implement the ability to notify the application of changes to the keyset it is responsible for, however this is not core functionality and not necessary for a working system.
+The library provides a means for applications to send messages to other nodes and receive incoming messages and handle them appropriately.
+
+I was not able to fully implement the ability to notify the application of changes to the keyset it is responsible for due to time constraints, however this is not core functionality and not necessary for a working system.
 
 
 % from nf req
 % high performance net
 % scalable
 % ease of use
-Ease of use can be difficult to evaluate, however there are only a small number of functions needed to be used to build an application using the library, combined with the fact that the \texttt{textsend} application is so small gives a good indication that the library provides an easy to use interface.
+Ease of use can be difficult to evaluate, however there are only a small number of functions needed to be used to build an application using the library, combined with the simplicity of the \texttt{textsend} application gives a good indication that the library provides an easy to use interface.
 
-The use of asynchronous I/O allows applications using the library to effectively utilise the resources they have available, the 
-
-
-% routing perf
-As for performance, there are several aspects to consider, firstly, network communication, the performance of lookup and routing can 
-
-I was able to run over one hundred instances of textsend on a single relatively low-end machine with ease
-Routing performance
-Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier
+The performance and scalability of the library can be split into several aspects, the ability to handle network interactions efficiently, the efficiency of the routing algorithm with regards to how the number of nodes which are required to be contacted to find the successor to a given ID, and the amount of resources required to run it.
+The library is notably lightweight, I was able to run over one hundred instances of textsend on a single relatively low-end machine with ease and a single node was able to handle messages incoming from every node in the system simultaneously, showing the libraries ability to handle network load.
+The routing performance of the system is excellent with the number of nodes needing to be contacted for routing growing considerably little as more nodes are added to the system.
+Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier with different numbers of nodes in a network
 
 \begin{figure}
 \begin{center}
@@ -559,8 +555,10 @@ Messages are made up of a single bit defining the type of the message; a 4 byte 
 \texttt{'M'} & N/A & Application dependant\\\hline
 \end{tabular}
 
+\newgeometry{margin=3cm}
 \section{quantifiable testing results}
 \subsection{Lookup Hops}
+This table shows the number of hops taken to look up the successor of an id by all nodes in a network.
 \newsavebox\ltmcbox
 \newcolumntype{N}{>{\arraybackslash}m{2.5cm}}
 \begin{multicols}{2}
@@ -703,6 +701,7 @@ Messages are made up of a single bit defining the type of the message; a 4 byte 
 \unvbox\ltmcbox
 
 \end{multicols}
+\restoregeometry
 
 
 \end{document}
