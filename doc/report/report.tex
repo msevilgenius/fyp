@@ -10,7 +10,7 @@
 \graphicspath{{fig/}}
 %\graphicspath{{F:/Documents/fyp/doc/report/fig/}}
 \usepackage{array}
-
+\usepackage[hidelinks]{hyperref}
 \usepackage[ %backend=biber
     style=numeric,
     sorting=none]{biblatex}
@@ -62,7 +62,14 @@ This report is submitted as part requirement for the degree of Computer Science 
 \newpage
 
 \section*{Summary}
+{
+Distributed systems are challenging to design and build, Distributed hash tables can be used to implement many types of distributed system. Specifically DHTs are decentralised, self-organising, and able to adapt to changes in the set of individuals that make up the system. High performance network communication is important for implementing such a system if it is to be highly scalable, and Asynchronous I/O provide a highly scalable means of handling I/O operations.
 
+The library produced provides a simple interface for building networks of large numbers of nodes and routing messages between them, the networks it builds are self organising and are resilient against failures of individual nodes in them. It uses Asynchronous I/O for network communication allowing for high scalability.
+
+This report outlines the inspiration for, and design and implementation of my high-performance DHT based library for building decentralised, self-organising, peer-to-peer systems. It explores similar existing solutions and design ideas used; details of the design and implementation of the library and example applications using the library.
+
+}
 
 \newpage
 \tableofcontents
@@ -94,8 +101,9 @@ Existing libraries may be used in this project and their licenses must be follow
 
 \subsubsection{Distributed Hash Tables}
 Distributed Hash Tables (DHTs) are a method of distributing data or workloads evenly among a number of systems. As the name suggests they function like hash tables or hash maps, where data is mapped to \textit{buckets} (separate computing nodes in a DHT) by hashing a \textit{key} and using the hash to assign a bucket. In DHTs each node is given ownership of a section of the keyspace, with an \textit{overlay network} connecting the nodes to each other to allow them to find the owner of a particular key.
+DHTs are generally self-organising and decentralised making them more robust than systems which rely on a central server, and are designed with a large number of nodes, in the thousands or even millions, in mind.
 
-DHT specifically refers to a storage and retrieval system, though the concept can be used and adapted for much more general purposes such as dividing computational work between many systems.
+DHT specifically refers to a storage and retrieval system, though the concept can be adapted and used for much more general purposes such as dividing computational work between many systems.
 \\
 \\
 \subsubsection{The chord protocol} 
@@ -147,6 +155,8 @@ Redundancy is implemented by appending a sequence of 'salt' values to object IDs
 Memcached\cite{memcached} is a distributed in-memory caching system based on a distributed hash table intended for use in speeding up web applications by caching database entries, though it is possible to use it for other similar purposes. It is used by many large web companies.
 
 Memcached uses spare memory on web servers to create a distributed in-memory cache which can be used to alleviate server load. This provides several benefits when compared to having each server managing it's own individual cache: the combined cache is much larger than individual caches; cached data is consistent any server requesting the a key in the cache will get the same value, whereas separate caches may not update data at the same time; improved scalability, as more servers are added to handle increasing load the size of the cache increases, making large scaling much easier than it would be with individual caches per server.
+
+Memcached is made up of several components: client software, for interacting with the cache; a hashing algorithm, for mapping data to servers, as in most DHT based systems; The server software, which actually manages storing and retrieving data; and an LRU system for managing cached data and discarding old data when necessary. Memcached differs from DHTs in that its servers are not aware of each other, but the client software manages mapping keys to servers, this allows for high performance in data retrieval.
 \\
 \\
 
@@ -429,9 +439,9 @@ Much of the code in this project is difficult to test because of the fact that m
 
 Once the minimal required functionality had been implemented, I was able to test the functionality of the library using a simple application with minimal functionality, specifically I used the textsend application to test that nodes were able to join and that the network stabilized itself and routed messages correctly. Starting with a single instance routing messages to itself and gradually adding nodes Using a combination of debug logging and GDB, I was able to diagnose and fix major errors and bugs in the system.
 
-Once basic functionality was working, I was able to begin testing the system with larger numbers of nodes. To test that the network correctly stabilised and routed messages, I used instances of textsend to send the route same message from all nodes and check that they all arrived at the same node. After adding the ability to count the number of hops required to find the correct node to route a message to this same method was used to test routing performance, results shown in fig. \ref{fig:fingerperf}.
+Once basic functionality was working, I was able to begin testing the system with larger numbers of nodes, running over a hundred nodes on a relatively low end machine. To test that the network correctly stabilised and routed messages, I used instances of textsend to send the route same message from all nodes and check that they all arrived at the same node. After adding the ability to count the number of hops required to find the correct node to route a message to this same method was used to test routing performance, results shown in fig. \ref{fig:fingerperf}.
 
-Another aspect of the system tested in this way was failure tolerance. By setting up a network then manually terminating instances and retesting the routing of messages, I was able to verify that the network can manage failures and repair its routing infrastructure.
+Another aspect of the system tested in this way was failure tolerance. By setting up a network then manually terminating several random instances and retesting the routing of messages, I was able to verify that the network can manage failures and repair its routing infrastructure.
 
 \section{Evaluation}
 
@@ -456,7 +466,7 @@ I was not able to fully implement the ability to notify the application of chang
 % ease of use
 Ease of use can be difficult to evaluate, however the \texttt{textsend} application gives an indication that the library provides an easy to use interface
 
-The use of asynchronous I/O allows applications using the library to effectively utilise the resources they have available
+The use of asynchronous I/O allows applications using the library to effectively utilise the resources they have available, the 
 
 
 % routing perf
@@ -480,6 +490,8 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 
 
 \section{Conclusion}
+
+In this report I have provided an overview of the problem being tackled, details of the design and implementation and evaluation of my solution.
 
 Overall I would say that I have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
 
