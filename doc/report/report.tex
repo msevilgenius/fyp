@@ -473,7 +473,7 @@ Ease of use can be difficult to evaluate, however there are only a small number 
 The performance and scalability of the library can be split into several aspects, the ability to handle network interactions efficiently, the efficiency of the routing algorithm with regards to how the number of nodes which are required to be contacted to find the successor to a given ID, and the amount of resources required to run it.
 The library is notably lightweight, I was able to run over one hundred instances of textsend on a single relatively low-end machine with ease and a single node was able to handle messages incoming from every node in the system simultaneously, showing the libraries ability to handle network load.
 The routing performance of the system is excellent with the number of nodes needing to be contacted for routing growing considerably little as more nodes are added to the system.
-Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier with different numbers of nodes in a network
+Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor of a given identifier with different numbers of nodes in a network, it shows that the growth of routing work is manageable with network growth.
 
 \begin{figure}
 \begin{center}
@@ -492,7 +492,7 @@ Figure \ref{fig:fingerperf} shows the mean number of hops to find the successor 
 
 In this report I have provided an overview of the problem being tackled, details of the design and implementation and evaluation of my solution.
 
-Overall I would say that I have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication.
+Overall I would say that I have succeeded in building a library for implementing distributed systems, which provides an interface for sending messages between nodes and handles organising and maintaining the network using asynchronous I/O for network communication. The library I produced implements the required functionality and does so whilst performing well
 
 In hindsight, being able to have set up additional, possibly automated testing such as unit tests may have improved my ability to find and diagnose some errors in the library.
 
