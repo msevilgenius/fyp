@@ -1,0 +1,26 @@
+In the talk, you should give an overview of your project and describe what you achieved.
+If you have written software you should demonstrate it. 
+Your task is to convince your listeners that your project work is interesting and of high quality.
+
+
+1. Outline problem area(s)
+distributing
+scalability
+netio perf
+
+2. choices made
+
+3. system functionality
+4. system design specs 'under the hood'
+
+
+
+Notes:
+- Emphasize
+    - Scale
+    - e.g. Memcached
+        - i.e. high perf, scalable things
+		
+Overview:
+
+	Distributed systems and networks scalability are hard
