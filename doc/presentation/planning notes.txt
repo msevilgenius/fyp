@@ -24,3 +24,86 @@ Notes:
 Overview:
 
 	Distributed systems and networks scalability are hard
+	
+	I built a library which handles:
+		organising network
+		mapping messages
+		
+		details
+		lots of interdependant parts
+		network
+			implementation of simple async server
+			managing connections
+			+
+			accept incoming and notify next layer
+		
+		nodelayer
+			really juicy bit
+			sha1 hash => ID
+			
+			ID space like a ring
+			ID = place on ring
+			=> nodes have an 'order'
+			
+			self organising
+			
+			
+			for arbitrarily large and dynamic networks
+			full list of nodes unviable
+			
+			list of known local nodes
+			sparse list of further nodes
+			
+			id mapping
+				ask next node all round ring till correct mapping found
+					grows linearly can be slow and unnecessary
+				list of further nodes useful
+				find closest node we know about
+				ask it, it does same until node found
+			
+			
+		
+	using:
+		async io
+			scalability by large numbers of connections simultaneously with low overhead
+			
+		
+		
+	self-organising
+	decentralised
+	peer-to-peer
+	network
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.
