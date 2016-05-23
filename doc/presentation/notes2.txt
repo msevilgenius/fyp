@@ -44,6 +44,9 @@ so assign nodes ID (hash of w/e)
 		
 	stab
 		accounts for changes in node set
+		check succs
+		check pred
+		update fingers
 	
 	dealing with joins and failures
 	join
@@ -59,7 +62,13 @@ so assign nodes ID (hash of w/e)
 		removes its entry
 		moves on to next succ
 	
+interface
+	setup
+	join/create network
+	map id to node
 	
+	net:
+	open connections for data
 	
 	
 	
