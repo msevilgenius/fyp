@@ -70,5 +70,42 @@ interface
 	net:
 	open connections for data
 	
+system has wide ranging uses
+	
+	memcached
+		caching database etc results over many servers with a little spare resources
+		consistent hashing
+		
+	publish subscribe
+	
+	distributed storage
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
