@@ -90,6 +90,10 @@ Overview:
 	decentralised
 	peer-to-peer
 	network
+	
+	uses:
+		memcached
+			scaling database etc. caching
 
 
 

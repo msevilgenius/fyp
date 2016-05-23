@@ -1,0 +1,8 @@
+distributing methods
+
+	central authority
+		slow failure prone inefficient
+	p2p
+		all nodes equal
+		failure inconsequential
+		
