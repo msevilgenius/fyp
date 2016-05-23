@@ -6,3 +6,38 @@ distributing methods
 		all nodes equal
 		failure inconsequential
 		
+		
+so I built lib
+	
+	tentatively
+	libDHT
+	
+	c lib
+
+scalability needs
+	handle many messages
+		organise network
+		handle outside requests
+	with minimal impact
+	so node can do its job
+	
+	
+	for this non-blocking async io
+		blocking io - useless for handling simulatneous connections
+		thread/process pre req has overhead
+	
+	other aspect
+	many nodes and organising them
+	
+so assign nodes ID (hash of w/e)
+	ids processed numerically
+	
+	form a 'ring'
+	
+	map work to node by using a key hash
+	go around ring until the closest node to that id
+	large number of nodes = large number of hops = inefficient
+	
+	so
+	finger table
+		finger[n] = successor(id + n^2)
