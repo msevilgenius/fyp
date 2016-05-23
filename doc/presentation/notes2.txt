@@ -41,3 +41,25 @@ so assign nodes ID (hash of w/e)
 	so
 	finger table
 		finger[n] = successor(id + n^2)
+		
+	stab
+		accounts for changes in node set
+	
+	dealing with joins and failures
+	join
+		find succ like normal
+		notify succ
+		pred asks succ for it's pred
+		changed
+		pred updates succ notifies new node
+		done
+	leave
+		node leaves
+		stabilise notices dead node
+		removes its entry
+		moves on to next succ
+	
+	
+	
+	
+	
