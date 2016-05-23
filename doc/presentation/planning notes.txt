@@ -49,7 +49,7 @@ Overview:
 			
 			
 			for arbitrarily large and dynamic networks
-			full list of nodes unviable
+			full list of nodes not viable
 			
 			list of known local nodes
 			sparse list of further nodes
@@ -60,6 +60,8 @@ Overview:
 				list of further nodes useful
 				find closest node we know about
 				ask it, it does same until node found
+			
+			
 			
 			
 		
