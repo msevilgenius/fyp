@@ -23,6 +23,10 @@ Notes:
 		
 Overview:
 
+	modern digital age
+	strategies for coping with scale
+	low cost redundant distributred hardware
+
 	Distributed systems and networks scalability are hard
 	
 	I built a library which handles:
@@ -61,7 +65,18 @@ Overview:
 				find closest node we know about
 				ask it, it does same until node found
 			
-			
+			organise and stabilise
+				a node can find its successor the same way as for ids^
+				list of successors
+					ask succ for pred incase new node between us
+					notify (new) succ
+				finger table
+					list of nodes n0, n1, n2 ... with lowest id greater than id + 2^n
+					the first one (and possibly more) = successor
+				predecessor
+					so nodes can find newly joined nodes after them
+					
+				periodically check and update all of them
 			
 			
 		
